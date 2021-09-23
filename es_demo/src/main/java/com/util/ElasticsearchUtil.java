@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ import java.util.UUID;
 public class ElasticsearchUtil {
     //最好不要自定义id 会影响插入速度。
 
-    @Autowired
+    @Resource
     @Qualifier("restHighLevelClient")
     private RestHighLevelClient restHighLevelClient;
 
@@ -167,7 +168,7 @@ public class ElasticsearchUtil {
      * @param id         数据ID,为null时es随机生成
      * @return
      */
-    public  String addData(Object object, String index, String id) throws IOException {
+    public String addData(Object object, String index, String id) throws IOException {
         //创建请求
         IndexRequest request = new IndexRequest(index);
         //规则 put /test_index/_doc/1
@@ -186,7 +187,7 @@ public class ElasticsearchUtil {
      * @param index      索引，类似数据库
      * @return
      */
-    public  String addData(Object object, String index) throws IOException {
+    public String addData(Object object, String index) throws IOException {
         return addData(object, index, UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
     }
 
@@ -196,7 +197,7 @@ public class ElasticsearchUtil {
      * @param id    数据ID
      * @return
      */
-    public  void deleteDataById(String index,String id) throws IOException {
+    public void deleteDataById(String index,String id) throws IOException {
         DeleteRequest request = new DeleteRequest(index, id);
         restHighLevelClient.delete(request, RequestOptions.DEFAULT);
     }
@@ -208,7 +209,7 @@ public class ElasticsearchUtil {
      * @param id         数据ID
      * @return
      */
-    public  void updateDataById(Object object, String index, String id) throws IOException {
+    public void updateDataById(Object object, String index, String id) throws IOException {
         UpdateRequest update = new UpdateRequest(index, id);
         update.timeout("1s");
         update.doc(JSON.toJSONString(object), XContentType.JSON);
@@ -238,7 +239,7 @@ public class ElasticsearchUtil {
      * @param id     数据ID
      * @return
      */
-    public  boolean existsById(String index,String id) throws IOException {
+    public boolean existsById(String index,String id) throws IOException {
         GetRequest request = new GetRequest(index, id);
         //不获取返回的_source的上下文
         request.fetchSourceContext(new FetchSourceContext(false));
@@ -252,7 +253,7 @@ public class ElasticsearchUtil {
      * @param objects     数据
      * @return
      */
-    public  boolean bulkPost(String index, List<?> objects) {
+    public boolean bulkPost(String index, List<?> objects) {
         BulkRequest bulkRequest = new BulkRequest();
         BulkResponse response=null;
         //最大数量不得超过20万
