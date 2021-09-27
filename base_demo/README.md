@@ -31,7 +31,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
 ```
-### [Minio工具类](https://gitee.com/valuenull/java-demo/blob/master/base_demo/src/main/java/com/base/utils/MinioUtils.java)
+### [Minio工具类](https://gitee.com/valuenull/java-demo/blob/master/base_demo/src/main/java/com/base/utils/StringUtils)
 ```xml
 <!-- minio -->
 <dependency>
@@ -41,3 +41,15 @@ spring:
 </dependency>
 <!-- minio -->
 ```
+### [String 工具类](https://gitee.com/valuenull/java-demo/blob/master/base_demo/src/main/java/com/base/utils/MinioUtils.java)
+```xml
+<!--StringUtils-->
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.9</version>
+</dependency>
+<!--StringUtils-->
+```
+### [FileUtil 工具类](https://gitee.com/valuenull/java-demo/blob/master/base_demo/src/main/java/com/base/utils/FileUtils.java)
