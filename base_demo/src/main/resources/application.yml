@@ -1,0 +1,7 @@
+spring:
+  application:
+    # 应用名称
+    name: base_demo
+    # 排除此类  解决spring 上传冲突问题
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
