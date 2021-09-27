@@ -41,7 +41,7 @@ spring:
 </dependency>
 <!-- minio -->
 ```
-### [String 工具类](https://gitee.com/valuenull/java-demo/blob/master/base_demo/src/main/java/com/base/utils/StringUtils)
+### [String 工具类](https://gitee.com/valuenull/java-demo/blob/master/base_demo/src/main/java/com/base/utils/StringUtils.java)
 ```xml
 <!--StringUtils-->
 <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
