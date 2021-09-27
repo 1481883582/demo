@@ -31,13 +31,13 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
 ```
-### Minio工具类
+### [Minio工具类](https://gitee.com/valuenull/java-demo/blob/master/base_demo/src/main/java/com/base/utils/MinioUtils.java)
 ```xml
 <!-- minio -->
-        <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>${minio.version}</version>
-        </dependency>
-        <!-- minio -->
+<dependency>
+    <groupId>io.minio</groupId>
+    <artifactId>minio</artifactId>
+    <version>${minio.version}</version>
+</dependency>
+<!-- minio -->
 ```
