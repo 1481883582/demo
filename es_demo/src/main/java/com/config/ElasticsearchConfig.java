@@ -18,7 +18,7 @@ public class ElasticsearchConfig {
     /**
      * 集群地址，多个用,隔开 ="192.168.142.131:9200"
      */
-    @Value("${elasticsearch.hosts:192.168.142.131}")
+    @Value("${elasticsearch.hosts:127.0.0.1}")
     private String hosts;
     /**
      * 使用的端口号= 9200
@@ -98,7 +98,7 @@ public class ElasticsearchConfig {
 
         return new RestHighLevelClient(builder);
     }
-    //    @Bean
+//    @Bean
 //    public RestHighLevelClient restHighLevelClient(){
 //        return new RestHighLevelClient(
 //                RestClient.builder(

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class ESClient {
     private static ESClient ESClient;
-    private String host = "localhost:9200,localhost:9201";
+    private String host = "localhost:9200";
     private RestClientBuilder builder;
     private static Sniffer sniffer;
     private static RestHighLevelClient highClient;

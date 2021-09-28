@@ -13,23 +13,6 @@
 
 表格仅供参考，来自https://docs.spring.io/spring-data/elasticsearch/docs/4.2.4/reference/html/#preface.metadata
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 应用
 ### 倒排
 ### 索引
