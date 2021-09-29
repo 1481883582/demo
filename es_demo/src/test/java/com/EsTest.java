@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -40,6 +41,16 @@ public class EsTest {
 		//打印 0-100的数据
 		Page<Contact> page = contactESService.findAll(PageRequest.of(0, Math.max(1, 100)));
 		page.get().forEach( a-> log.info(a.toString()));
+
+
+		//根据 id  倒排序
+		Sort descId = Sort.by(Sort.Order.desc("id"));
+		Iterable<Contact> sortAll = contactESService.findAll(descId);
+		sortAll.forEach( a-> log.info(a.toString()));
+
+		//查询总数
+		long count = contactESService.count();
+		log.info("总数据:" + count);
 	}
 
 	/**
