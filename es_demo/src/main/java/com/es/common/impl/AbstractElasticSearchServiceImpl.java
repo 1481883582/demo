@@ -2,16 +2,13 @@ package com.es.common.impl;
 
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import com.alibaba.fastjson.JSONObject;
 import com.es.common.ElasticSearchService;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.index.IndexRequest;
@@ -25,11 +22,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,22 +36,17 @@ import org.springframework.data.elasticsearch.core.query.MoreLikeThisQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
-import org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.util.Streamable;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 import java.io.IOException;
 import static org.elasticsearch.index.query.QueryBuilders.idsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
-/**
- * @author daidasheng
- */
 @Slf4j
 public abstract class AbstractElasticSearchServiceImpl<T, ID> implements ElasticSearchService<T, ID>{
 

@@ -8,13 +8,9 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author daidasheng
- */
 @NoRepositoryBean
 public interface ElasticSearchService<T, ID> extends ElasticsearchRepository<T, ID> {
 
