@@ -52,7 +52,7 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
 
     protected RestHighLevelClient client;
 
-    //内部包含了 RestHighLevelClient
+    //内部包含了 RestHighLevelClient  ElasticsearchRestTemplate
     protected ElasticsearchOperations operations;
 
     //包含 索引设置  创建映射等有一些方法
@@ -264,7 +264,7 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
     }
 
     /**
-     * 数据是否讯在
+     * 根据id查数据是否存在ES
      * @param id
      * @return
      */
@@ -325,6 +325,10 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return (Page<T>) SearchHitSupport.unwrapSearchHits(page);
     }
 
+    /**
+     * 根据id删除
+     * @param id  id
+     */
     @Override
     public void deleteById(ID id) {
 
@@ -335,6 +339,10 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         indexOperations.refresh();
     }
 
+    /**
+     * 删除指定实体
+     * @param entity 实体
+     */
     @Override
     public void delete(T entity) {
 
@@ -345,6 +353,10 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         indexOperations.refresh();
     }
 
+    /**
+     * 删除集合
+     * @param entities  集合
+     */
     @Override
     public void deleteAll(Iterable<? extends T> entities) {
 
@@ -375,6 +387,9 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         }
     }
 
+    /**
+     * 删除所有
+     */
     @Override
     public void deleteAll() {
         IndexCoordinates indexCoordinates = getIndexCoordinates();
@@ -384,6 +399,9 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         indexOperations.refresh();
     }
 
+    /**
+     * 刷新缓存
+     */
     @Override
     public void refresh() {
         indexOperations.refresh();
@@ -400,6 +418,10 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return genericSuperclass;
     }
 
+    /**
+     * 获取当前Class
+     * @return
+     */
     protected Class<T> getEntityClass() {
 
         if (!isEntityClassSet()) {
@@ -437,7 +459,6 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
 
     @Override
     public JSONObject buildIndexSyntax(String IndexName) {
-        log.info("2334");
         return null;
     }
 

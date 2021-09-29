@@ -7,8 +7,13 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 import java.util.ArrayList;
 
@@ -98,16 +103,21 @@ public class ElasticsearchConfig {
 
         return new RestHighLevelClient(builder);
     }
-//    @Bean
-//    public RestHighLevelClient restHighLevelClient(){
-//        return new RestHighLevelClient(
-//                RestClient.builder(
-//                        new HttpHost(
-//                                "192.168.142.131",
-//                                9200,
-//                                "http"
-//                        )
-//                )
-//        );
-//    }
+
+    /**
+     * Spring data 默认是 ElasticsearchTemplate
+     * 这里从 ElasticsearchTemplate 替换为  ElasticsearchRestTemplate
+     */
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnClass(RestHighLevelClient.class)
+    static class RestClientConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean(value = ElasticsearchOperations.class, name = "elasticsearchTemplate")
+        @ConditionalOnBean(RestHighLevelClient.class)
+        ElasticsearchRestTemplate elasticsearchTemplate(RestHighLevelClient client) {
+            return new ElasticsearchRestTemplate(client);
+        }
+
+    }
 }

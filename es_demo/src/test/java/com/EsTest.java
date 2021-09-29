@@ -1,7 +1,10 @@
 package com;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.entity.Contact;
 import com.es.ContactESService;
+import com.service.ContactService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +25,43 @@ import java.util.Optional;
 @Slf4j
 public class EsTest {
 
-
+	/**
+	 * ES
+	 */
 	@Resource
 	private ContactESService contactESService;
 
+	/**
+	 * SQL
+	 */
+	@Resource
+	private ContactService contactService;
+
+	/**
+	 * 保存
+	 */
+	@Test
+	public void save(){
+		//获取全部数据
+		List<Contact> list = contactService.list(new LambdaUpdateWrapper<Contact>());
+		//保存ES
+		contactESService.saveAll(list);
+		log.info("总数据:" + contactESService.count());
+
+
+		//从数据库获取一个对象  如果ES不存在  保存到ES
+		Contact contact = contactService.getOne(
+				new LambdaQueryWrapper<Contact>()
+						.eq(Contact::getId, 3)
+						.last(" LIMIT 1 ")
+		);
+		//不存在增加数据
+		boolean existsById = contactESService.existsById(contact.getId());
+		if(!existsById){
+			contactESService.save(contact);
+		}
+		log.info("总数据:" + contactESService.count());
+	}
 
 	/**
 	 * 查询所有
