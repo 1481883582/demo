@@ -24,7 +24,6 @@ public interface ElasticSearchService<T, ID> extends ElasticsearchRepository<T, 
 
     public boolean isExist(String indexName) throws IOException;
 
-
     public boolean updateIndex(String indexSyntax, String indexName);
 
     public int batchInsert(List<Class<?>> data);

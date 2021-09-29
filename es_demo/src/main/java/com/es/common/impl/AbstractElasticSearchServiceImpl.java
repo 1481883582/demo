@@ -68,6 +68,7 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
     //内部包含了 RestHighLevelClient
     protected ElasticsearchOperations operations;
 
+    //包含 索引设置  创建映射等有一些方法
     protected IndexOperations indexOperations;
 
     //实体类对象
@@ -104,12 +105,17 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return entityInformation.getId(entity);
     }
 
-
-    private void createIndex() {
+    /**
+     * 创建索引
+     */
+    public void createIndex() {
         indexOperations.create();
     }
 
-    private void putMapping() {
+    /**
+     * 创建映射
+     */
+    public void putMapping() {
         indexOperations.putMapping(indexOperations.createMapping(entityClass));
     }
 
@@ -120,6 +126,11 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return entity.isCreateIndexAndMapping();
     }
 
+    /**
+     * 根据id 查询
+     * @param id
+     * @return
+     */
     @Override
     public Optional<T> findById(ID id) {
         return Optional.ofNullable(operations.get(stringIdRepresentation(id), getEntityClass(), getIndexCoordinates()));
@@ -142,7 +153,7 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
     }
 
     /**
-     * 根据偏移量查询
+     * 根据偏移量查询  第0条到第100条
      * 0-100个数据
      * @param pageable PageRequest.of(0, Math.max(1, 100))
      * @return
@@ -156,6 +167,11 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return (Page<T>) SearchHitSupport.unwrapSearchHits(page);
     }
 
+    /**
+     * 根据传入排序
+     * @param sort 排序规则
+     * @return  返回数据
+     */
     @SuppressWarnings("unchecked")
     @Override
     public Iterable<T> findAll(Sort sort) {
@@ -171,6 +187,11 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return (List<T>) SearchHitSupport.unwrapSearchHits(searchHitList);
     }
 
+    /**
+     * 根据几个id 返回数据
+     * @param ids  集合id
+     * @return  数据
+     */
     @Override
     public Iterable<T> findAllById(Iterable<ID> ids) {
 
@@ -196,12 +217,22 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return result;
     }
 
+    /**
+     * 返回总数据量
+     * @return
+     */
     @Override
     public long count() {
         NativeSearchQuery query = new NativeSearchQueryBuilder().withQuery(matchAllQuery()).build();
         return operations.count(query, getEntityClass(), getIndexCoordinates());
     }
 
+    /**
+     * 单个保存
+     * @param entity  对象
+     * @param <S>
+     * @return
+     */
     @Override
     public <S extends T> S save(S entity) {
 
@@ -227,6 +258,12 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return entity;
     }
 
+    /**
+     * 保存所有
+     * @param entities
+     * @param <S>
+     * @return
+     */
     @Override
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
 
@@ -239,6 +276,11 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         return entities;
     }
 
+    /**
+     * 数据是否讯在
+     * @param id
+     * @return
+     */
     @Override
     public boolean existsById(ID id) {
         return operations.exists(stringIdRepresentation(id), getIndexCoordinates());
