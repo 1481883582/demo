@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSONObject;
 import com.es.common.ElasticSearchService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.index.IndexRequest;
@@ -24,17 +25,18 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
+import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.IndexOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.SearchHitSupport;
-import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.*;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.mapping.ElasticsearchPersistentEntity;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -42,16 +44,16 @@ import org.springframework.data.elasticsearch.core.query.MoreLikeThisQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
-import org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository;
+import org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository;
+import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
+import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
+import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.data.util.Streamable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
-import javax.annotation.Resource;
 import java.io.IOException;
-
 import static org.elasticsearch.index.query.QueryBuilders.idsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
@@ -59,18 +61,48 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
  * @author daidasheng
  */
 @Slf4j
-@Service
-public abstract class AbstractElasticSearchServiceImpl<T, ID> implements ElasticSearchService<T, ID> {
+public abstract class AbstractElasticSearchServiceImpl<T, ID> implements ElasticSearchService<T, ID>{
 
-    @Resource
-    private RestHighLevelClient client;
+    protected RestHighLevelClient client;
 
-    @Resource
-    private ElasticsearchOperations operations;
+    //内部包含了 RestHighLevelClient
+    protected ElasticsearchOperations operations;
 
     protected IndexOperations indexOperations;
 
+    //实体类对象
     protected Class<T> entityClass;
+
+    //映射对象
+    protected @Nullable ElasticsearchEntityInformation<T, ID> entityInformation;
+
+    //工厂
+    protected RepositoryFactorySupport elasticsearchRepositoryFactory;
+
+
+    public AbstractElasticSearchServiceImpl(RestHighLevelClient client, ElasticsearchOperations operations) {
+        this.entityClass = resolveReturnedClassFromGenericType();
+        this.client = client;
+        this.operations = operations;
+        this.indexOperations = operations.indexOps(this.entityClass);
+        this.elasticsearchRepositoryFactory = new ElasticsearchRepositoryFactory(this.operations);
+        this.entityInformation = (ElasticsearchEntityInformation<T, ID>) elasticsearchRepositoryFactory.getEntityInformation(entityClass);
+
+
+        try {
+            if (createIndexAndMapping() && !indexOperations.exists()) {
+                createIndex();
+                putMapping();
+            }
+        } catch (Exception exception) {
+            log.warn("Cannot create index: {}", exception.getMessage());
+        }
+    }
+
+    @Nullable
+    protected ID extractIdFromBean(T entity) {
+        return entityInformation.getId(entity);
+    }
 
 
     private void createIndex() {
@@ -280,7 +312,7 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         Assert.notNull(entity, "Cannot delete 'null' entity.");
 
         IndexCoordinates indexCoordinates = getIndexCoordinates();
-//        doDelete(extractIdFromBean(entity), indexCoordinates);
+        doDelete(extractIdFromBean(entity), indexCoordinates);
         indexOperations.refresh();
     }
 
@@ -292,10 +324,10 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
         IndexCoordinates indexCoordinates = getIndexCoordinates();
         IdsQueryBuilder idsQueryBuilder = idsQuery();
         for (T entity : entities) {
-//            ID id = extractIdFromBean(entity);
-//            if (id != null) {
-//                idsQueryBuilder.addIds(stringIdRepresentation(id));
-//            }
+            ID id = extractIdFromBean(entity);
+            if (id != null) {
+                idsQueryBuilder.addIds(stringIdRepresentation(id));
+            }
         }
 
         if (idsQueryBuilder.ids().isEmpty()) {

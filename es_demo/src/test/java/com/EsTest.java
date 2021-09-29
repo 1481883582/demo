@@ -5,11 +5,9 @@ import com.es.ContactESService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -59,17 +57,50 @@ public class EsTest {
 	@Test
 	public void findById() {
 		//根据id 查询 详细对象
-		Optional<Contact> byId = contactESService.findById("3");
+		Optional<Contact> byId = contactESService.findById(3);
 		log.info(byId.get().toString());
 
 		//根据id List 查询详细对象
-		List<String> list = new ArrayList<>();
-		list.add("3");
-		list.add("4");
-		list.add("5");
+		List<Integer> list = new ArrayList<>();
+		list.add(3);
+		list.add(4);
+		list.add(5);
 		Iterable<Contact> allById = contactESService.findAllById(list);
 		//打印 0-100的数据
 		allById.forEach( a-> log.info(a.toString()));
+	}
+
+	/**
+	 * 删除ES
+	 */
+	@Test
+	public void delete(){
+		//删除指定id数据
+		contactESService.deleteById(3);
+		log.info("总数据:" + contactESService.count());
+
+
+		//查到对象删除
+		Optional<Contact> byId = contactESService.findById(4);
+		Contact contact = byId.get();
+		//删除实体对象
+		contactESService.delete(contact);
+		log.info("总数据:" + contactESService.count());
+
+
+		//查到对象删除
+		List<Integer> list = new ArrayList<>();
+		list.add(5);
+		list.add(6);
+		list.add(7);
+		Iterable<Contact> contacts = contactESService.findAllById(list);
+		contactESService.deleteAll(contacts);
+		log.info("总数据:" + contactESService.count());
+
+
+		//删除所有
+		contactESService.deleteAll();
+		log.info("总数据:" + contactESService.count());
 	}
 
 }
