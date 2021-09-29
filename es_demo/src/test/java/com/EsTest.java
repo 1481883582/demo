@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.entity.Contact;
 import com.es.ContactESService;
 import com.service.ContactService;
+import com.util.ColumnUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -137,6 +138,16 @@ public class EsTest {
 		//删除所有
 		contactESService.deleteAll();
 		log.info("总数据:" + contactESService.count());
+	}
+
+	/**
+	 * 删除ES
+	 */
+	@Test
+	public void demo(){
+		String name = ColumnUtil.getName(Contact::getSubName);
+		log.info(name);
+
 	}
 
 }
