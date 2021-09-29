@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @RunWith(SpringRunner.class)
@@ -30,13 +33,32 @@ public class EsTest {
 	 */
 	@Test
 	public void findAll() {
-		Iterable<Contact> all = contactESService.findAll();
 		//打印所有数据
+		Iterable<Contact> all = contactESService.findAll();
 		all.forEach( a-> log.info(a.toString()));
 
-		Page<Contact> page = contactESService.findAll(PageRequest.of(0, Math.max(1, 100)));
 		//打印 0-100的数据
+		Page<Contact> page = contactESService.findAll(PageRequest.of(0, Math.max(1, 100)));
 		page.get().forEach( a-> log.info(a.toString()));
+	}
+
+	/**
+	 * 根据条件查询
+	 */
+	@Test
+	public void findById() {
+		//根据id 查询 详细对象
+		Optional<Contact> byId = contactESService.findById("3");
+		log.info(byId.get().toString());
+
+		//根据id List 查询详细对象
+		List<String> list = new ArrayList<>();
+		list.add("3");
+		list.add("4");
+		list.add("5");
+		Iterable<Contact> allById = contactESService.findAllById(list);
+		//打印 0-100的数据
+		allById.forEach( a-> log.info(a.toString()));
 	}
 
 }
