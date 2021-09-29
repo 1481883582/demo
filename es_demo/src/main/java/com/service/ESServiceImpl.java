@@ -20,9 +20,8 @@ public class ESServiceImpl<T> {
     }
 
     public boolean addData(List<T> list) {
-        if(list.size()<0){
-            return true;
-        }
+        if(list.isEmpty()) return true;
+
         try {
             if(esUtil.createIndex(list.get(0).getClass()))
                 return esUtil.batchSaveOrUpdate(list,true);
