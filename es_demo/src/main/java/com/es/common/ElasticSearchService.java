@@ -30,8 +30,6 @@ public interface ElasticSearchService<T, ID> extends ElasticsearchRepository<T, 
 
     public void deleteDataByQuery(String index, BoolQueryBuilder query);
 
-    public SearchResponse search(SearchRequest searchRequest);
-
     public SearchResponse scrollSearch(SearchScrollRequest searchScrollRequest);
 
     public void searchAsy(SearchRequest searchRequest, ActionListener<SearchResponse> listener);

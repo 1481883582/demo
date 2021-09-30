@@ -496,11 +496,6 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
     public void deleteDataByQuery(String index, BoolQueryBuilder query) { }
 
     @Override
-    public SearchResponse search(SearchRequest searchRequest) {
-        return null;
-    }
-
-    @Override
     public SearchResponse scrollSearch(SearchScrollRequest searchScrollRequest) {
         return null;
     }
