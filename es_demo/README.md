@@ -49,7 +49,10 @@ epoch      timestamp cluster        status node.total node.data shards pri relo 
   "active_shards_percent_as_number":100
 }
 ```
-
+### 分片与副本
+- index对应多个数据分片（分片组合等于完整数据）
+- 数据分片对应多个数据副本（副本等于数据数据的复制）
+- 所有副本数据均为active，active相同数据有一个Primary(主副本)与多个Replica(副本)
 ## 应用
 ### 倒排
 ### 索引
