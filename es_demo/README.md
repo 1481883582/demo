@@ -105,6 +105,10 @@ cd data/nodes/0/indices/
 ```bash 
 cd 0/index
 ```
+### Lucene全文检索流畅图（ES的底层是Lucene）
+![img_2.png](src/main/resources/img/img_2.png)
+### 倒排索引图
+![3-1倒排索引2.jpg](src/main/resources/img/3-1倒排索引2.jpg)
 到达对应index 数据存储目录
 ## 应用
 ### 倒排
