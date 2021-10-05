@@ -87,6 +87,24 @@ active_shards_percent//当前活动分片的百分比（当前工作分片的百
 ###### BM25
 ###### TF-IDF
 ##### 检索结果丰富（广度、召回率）
+### Elasticsearch存储
+从图片里看到uuid
+![img.png](src/main/resources/img/img.png)
+进入docker 中的 ES
+```bash
+docker exec -ti elasticsearch  /bin/bash
+```
+进入数据存放目录
+```bash
+cd data/nodes/0/indices/
+```
+输入 `ls -1`可以看到如下图片内容对应uuid
+![img_1.png](src/main/resources/img/img_1.png)
+进入对应`uuid`目录后
+```bash 
+cd 0/index
+```
+到达对应index 数据存储目录
 ## 应用
 ### 倒排
 ### 索引
