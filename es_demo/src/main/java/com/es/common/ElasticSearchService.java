@@ -13,28 +13,4 @@ import java.util.List;
 
 @NoRepositoryBean
 public interface ElasticSearchService<T, ID> extends ElasticsearchRepository<T, ID> {
-
-    public JSONObject buildIndexSyntax(String IndexName);
-
-    public boolean createIndex(String indexSyntax, String indexName);
-
-    public boolean isExist(String indexName) throws IOException;
-
-    public boolean updateIndex(String indexSyntax, String indexName);
-
-    public int batchInsert(List<Class<?>> data);
-
-    public IndexResponse insert(Class<?> data);
-
-    public void deleteDataByQuery(String index, TermQueryBuilder query);
-
-    public void deleteDataByQuery(String index, BoolQueryBuilder query);
-
-    public SearchResponse scrollSearch(SearchScrollRequest searchScrollRequest);
-
-    public void searchAsy(SearchRequest searchRequest, ActionListener<SearchResponse> listener);
-
-    public ClearScrollResponse clearScroll(ClearScrollRequest clearScrollRequest);
-
-    public IndexResponse esPipelineFile(String json, String index, String pipeline) throws IOException;
 }

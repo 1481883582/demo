@@ -7,21 +7,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import com.alibaba.fastjson.JSONObject;
 import com.es.common.ElasticSearchService;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.ActionListener;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.*;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.GetIndexRequest;
-import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -50,10 +40,12 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 @Slf4j
 public abstract class AbstractElasticSearchServiceImpl<T, ID> implements ElasticSearchService<T, ID>{
 
-    protected RestHighLevelClient client;
+    protected RestHighLevelClient restHighLevelClient;
 
     //内部包含了 RestHighLevelClient  ElasticsearchRestTemplate
     protected ElasticsearchOperations operations;
+
+    protected ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     //包含 索引设置  创建映射等有一些方法
     protected IndexOperations indexOperations;
@@ -70,12 +62,14 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
 
     public AbstractElasticSearchServiceImpl(RestHighLevelClient client, ElasticsearchOperations operations) {
         this.entityClass = resolveReturnedClassFromGenericType();
-        this.client = client;
+        this.restHighLevelClient = client;
         this.operations = operations;
         this.indexOperations = operations.indexOps(this.entityClass);
         this.elasticsearchRepositoryFactory = new ElasticsearchRepositoryFactory(this.operations);
         this.entityInformation = (ElasticsearchEntityInformation<T, ID>) elasticsearchRepositoryFactory.getEntityInformation(entityClass);
 
+        //如果是 ElasticsearchRestTemplate
+        if(this.operations instanceof ElasticsearchRestTemplate) this.elasticsearchRestTemplate = (ElasticsearchRestTemplate) this.operations;
 
         try {
             if (createIndexAndMapping() && !indexOperations.exists()) {
@@ -454,74 +448,5 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
 
     private IndexCoordinates getIndexCoordinates() {
         return operations.getIndexCoordinatesFor(getEntityClass());
-    }
-
-
-    @Override
-    public JSONObject buildIndexSyntax(String IndexName) {
-        return null;
-    }
-
-    @Override
-    public boolean createIndex(String indexSyntax, String indexName) {
-        return false;
-    }
-
-    @Override
-    public boolean isExist(String indexName) throws IOException {
-        GetIndexRequest request = new GetIndexRequest(indexName);
-        request.indices();
-        return client.indices().exists(request, RequestOptions.DEFAULT);
-    }
-
-    @Override
-    public boolean updateIndex(String indexSyntax, String indexName) {
-        return false;
-    }
-
-    @Override
-    public int batchInsert(List<Class<?>> data) {
-        return 0;
-    }
-
-    @Override
-    public IndexResponse insert(Class<?> data) {
-        return null;
-    }
-
-    @Override
-    public void deleteDataByQuery(String index, TermQueryBuilder query) {}
-
-    @Override
-    public void deleteDataByQuery(String index, BoolQueryBuilder query) { }
-
-    @Override
-    public SearchResponse scrollSearch(SearchScrollRequest searchScrollRequest) {
-        return null;
-    }
-
-    @Override
-    public void searchAsy(SearchRequest searchRequest, ActionListener<SearchResponse> listener) { }
-
-    @Override
-    public ClearScrollResponse clearScroll(ClearScrollRequest clearScrollRequest) {
-        return null;
-    }
-
-    /**
-     * es 文件分词
-     *
-     * @param json
-     * @param index
-     * @param pipeline
-     */
-    @Override
-    public IndexResponse esPipelineFile(String json, String index, String pipeline) throws IOException {
-        IndexRequest indexRequest = new IndexRequest(index);
-        // 上传同时，使用attachment pipeline进行提取文件
-        indexRequest.source(json, XContentType.JSON);
-        indexRequest.setPipeline(pipeline);
-        IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
-        return indexResponse;
     }
 }
