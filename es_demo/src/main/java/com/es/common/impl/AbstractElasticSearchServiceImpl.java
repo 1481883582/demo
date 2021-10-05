@@ -33,7 +33,6 @@ import org.springframework.data.util.Streamable;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-import java.io.IOException;
 import static org.elasticsearch.index.query.QueryBuilders.idsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
