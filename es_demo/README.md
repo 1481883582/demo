@@ -29,6 +29,22 @@
 epoch      timestamp cluster        status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
 1633439147 13:05:47  docker-cluster green           1         1      1   1    0    0        0             0                  -                100.0%
 ```
+```java
+epoch // 1970年1月1日 到现在的毫秒数(换算北京时间需要+8小时)
+timestamp //当前时间  (换算北京时间需要+8小时)
+cluster//集群名称
+status//集群当前的健康状态
+node.total//当前包含的所有节点数
+node.data//当前存放数据的节点
+shards//当前分片数量
+pri//主副本数量
+relo//迁移中的分片数量
+init//初始化中的分片数量
+unassign//未分配的分片数量
+pending_tasks//当前任务数量
+max_task_wait_time//最大的任务等待时间
+active_shards_percent//当前活动分片的百分比（当前工作分片的百分比）
+```
 #### [_cluster/health](127.0.0.1:9200/_cluster/health)
 ```json
 {
