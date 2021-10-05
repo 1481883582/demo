@@ -100,6 +100,7 @@ cd data/nodes/0/indices/
 ```
 输入 `ls -1`可以看到如下图片内容对应uuid
 ![img_1.png](src/main/resources/img/img_1.png)
+
 进入对应`uuid`目录后
 ```bash 
 cd 0/index
