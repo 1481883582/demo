@@ -12,6 +12,43 @@
 
 
 表格仅供参考，来自https://docs.spring.io/spring-data/elasticsearch/docs/4.2.4/reference/html/#preface.metadata
+## 集群的健康检查
+### 健康状态
+| 颜色 | 状态 | 描述 |
+| ---- | ---- | ---- |
+| 绿色 | Green | 所有Primary和Replica均为active，集群状态健康 |
+| 黄色 | Yellow | 至少一个Replica不可用，但是所有Primary均为active，数据仍然是可以保证完整性的  |
+| 红色 | Red | 至少一个Primary为不可用状态，数据不完整，集群不可用 |
+### 健康值查询
+#### [_cat/health](127.0.0.1:9200/_cat/health)
+```json
+1633439110 13:05:10 docker-cluster green 1 1 1 1 0 0 0 0 - 100.0%
+```
+#### [_cat/health?v](http://cc:9200/_cat/health?v)
+```json
+epoch      timestamp cluster        status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+1633439147 13:05:47  docker-cluster green           1         1      1   1    0    0        0             0                  -                100.0%
+```
+#### [_cluster/health](127.0.0.1:9200/_cluster/health)
+```json
+{
+  "cluster_name":"docker-cluster",
+  "status":"green",
+  "timed_out":false,
+  "number_of_nodes":1,
+  "number_of_data_nodes":1,
+  "active_primary_shards":1,
+  "active_shards":1,
+  "relocating_shards":0,
+  "initializing_shards":0,
+  "unassigned_shards":0,
+  "delayed_unassigned_shards":0,
+  "number_of_pending_tasks":0,
+  "number_of_in_flight_fetch":0,
+  "task_max_waiting_in_queue_millis":0,
+  "active_shards_percent_as_number":100
+}
+```
 
 ## 应用
 ### 倒排
