@@ -125,6 +125,11 @@ cd 0/index
 ```
 #### 查询索引
 ##### 查新索引 GET _cat/indices?v
+返回数据
+```text
+health status index   uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    685.4kb        685.4kb
+```
 ##### 查询所有数据 GET [/_search](127.0.0.1:9200/[_search])
 查询json
 ```json
