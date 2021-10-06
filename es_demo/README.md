@@ -113,6 +113,21 @@ cd 0/index
 ![3-1倒排索引2.jpg](src/main/resources/img/3-1倒排索引2.jpg)
 到达对应index 数据存储目录
 ## 应用
+### REST CRUD
+#### 创建索引&插入数据
+##### 创建索引 PUT [/[index]](127.0.0.1:9200/[index])
+##### 创建索引 PUT [/[index]?pretty](127.0.0.1:9200/[index]?pretty)
+##### 插入数据 PUT [/[index]/[type]/[id]](127.0.0.1:9200/[index]/[type]/[id])
+```json
+{
+  数据
+}
+```
+#### 查询索引
+##### 查新索引 GET _cat/indices?v
+#### 删除索引
+##### 删除索引 DELETE [/[index]?pretty](127.0.0.1:9200/[index])
+##### 删除索引 DELETE [/[index]/[type]/[id]](127.0.0.1:9200/[index]/[type]/[id])
 ### 索引
 ### Mapping
 ### 分词器
