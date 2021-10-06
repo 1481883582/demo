@@ -125,6 +125,156 @@ cd 0/index
 ```
 #### 查询索引
 ##### 查新索引 GET _cat/indices?v
+##### 查询所有数据 GET [/_search](127.0.0.1:9200/[_search])
+查询json
+```json
+{
+    "query":{
+        "match_all":{
+
+        }
+    }
+}
+```
+返回json
+```json
+{
+    "took":6,
+    "timed_out":false,
+    "_shards":{
+        "total":1,
+        "successful":1,
+        "skipped":0,
+        "failed":0
+    },
+    "hits":{
+        "total":{
+            "value":1497,
+            "relation":"eq"
+        },
+        "max_score":1,
+        "hits":[
+            {
+                "_index":"contact",
+                "_type":"_doc",
+                "_id":"3",
+                "_score":1,
+                "_source":{
+                    "_class":"com.entity.Contact",
+                    "id":3,
+                    "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d29b8512a04f.jpg",
+                    "itemName":"BarieCat“柚屿”系列",
+                    "subName":"舒适的非离子材质融合充满复古韵味的混血花纹；虚化的深色边缘与瞳孔的轮廓完美融合；搭配低明度高显色的基色将酷感混血进行到底。",
+                    "brandName":"Bariecat"
+                }
+            },
+            {
+                "_index":"contact",
+                "_type":"_doc",
+                "_id":"4",
+                "_score":1,
+                "_source":{
+                    "_class":"com.entity.Contact",
+                    "id":4,
+                    "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d297c0fa4f48.jpg",
+                    "itemName":"溪悦creekeye呦呦灰_副本",
+                    "subName":"进口MPC高保湿型非离子，轻薄无感！",
+                    "brandName":"溪悦Creek eye"
+                }
+            },
+            {
+                "_index":"contact",
+                "_type":"_doc",
+                "_id":"5",
+                "_score":1,
+                "_source":{
+                    "_class":"com.entity.Contact",
+                    "id":5,
+                    "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d297b1dab839.jpg",
+                    "itemName":"溪悦creekeye呦呦灰",
+                    "subName":"进口MPC高保湿型非离子，轻薄无感！",
+                    "brandName":"溪悦Creek eye"
+                }
+            }
+        ]
+    }
+}
+```
+##### 查询所有数据 GET [/[index]/_search](127.0.0.1:9200/[index]/_search)
+查询json
+```json
+{
+    "query":{
+        "match_all":{
+
+        }
+    }
+}
+```
+返回json
+```json
+{
+  "took":6,
+  "timed_out":false,
+  "_shards":{
+    "total":1,
+    "successful":1,
+    "skipped":0,
+    "failed":0
+  },
+  "hits":{
+    "total":{
+      "value":1497,
+      "relation":"eq"
+    },
+    "max_score":1,
+    "hits":[
+      {
+        "_index":"contact",
+        "_type":"_doc",
+        "_id":"3",
+        "_score":1,
+        "_source":{
+          "_class":"com.entity.Contact",
+          "id":3,
+          "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d29b8512a04f.jpg",
+          "itemName":"BarieCat“柚屿”系列",
+          "subName":"舒适的非离子材质融合充满复古韵味的混血花纹；虚化的深色边缘与瞳孔的轮廓完美融合；搭配低明度高显色的基色将酷感混血进行到底。",
+          "brandName":"Bariecat"
+        }
+      },
+      {
+        "_index":"contact",
+        "_type":"_doc",
+        "_id":"4",
+        "_score":1,
+        "_source":{
+          "_class":"com.entity.Contact",
+          "id":4,
+          "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d297c0fa4f48.jpg",
+          "itemName":"溪悦creekeye呦呦灰_副本",
+          "subName":"进口MPC高保湿型非离子，轻薄无感！",
+          "brandName":"溪悦Creek eye"
+        }
+      },
+      {
+        "_index":"contact",
+        "_type":"_doc",
+        "_id":"5",
+        "_score":1,
+        "_source":{
+          "_class":"com.entity.Contact",
+          "id":5,
+          "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d297b1dab839.jpg",
+          "itemName":"溪悦creekeye呦呦灰",
+          "subName":"进口MPC高保湿型非离子，轻薄无感！",
+          "brandName":"溪悦Creek eye"
+        }
+      }
+    ]
+  }
+}
+```
 #### 删除索引
 ##### 删除索引 DELETE [/[index]?pretty](127.0.0.1:9200/[index])
 ##### 删除索引 DELETE [/[index]/[type]/[id]](127.0.0.1:9200/[index]/[type]/[id])
