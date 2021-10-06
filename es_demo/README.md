@@ -651,8 +651,123 @@ coerce：
 ​	**27 term_vector：**运维参数
 ### 搜索和查询
 #### 查询上下文
+```text
+使用query关键字进行检索，倾向于相关度搜索，故需要计算评分。搜索是Elasticsearch最关键和重要的部分
+```
+```json
+{
+ // 代表消耗 6毫秒
+    "took":6,
+  //代表当前请求是否超时
+    "timed_out":false,
+  //分片参数
+    "_shards":{
+      //一共1个
+        "total":1,
+      //成功了1个
+        "successful":1,
+      //跳过了0个
+        "skipped":0,
+      //失败了0个
+        "failed":0
+    },
+  //返回结果
+    "hits":{
+        "total":{
+          //查到的总数量
+            "value":1497,
+          //关系式
+            "relation":"eq"
+        },
+      //当前数据最高评分
+        "max_score":1,
+      //返回结果
+        "hits":[
+            {
+                //索引名
+                "_index":"contact",
+                //索引类型
+                "_type":"_doc",
+                //索引id
+                "_id":"3",
+                //当前数据评分
+                "_score":1,
+                //具体数据
+                "_source":{
+                    //对应的类
+                    "_class":"com.entity.Contact",
+                    //具体参数
+                    "id":3,
+                    "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d29b8512a04f.jpg",
+                    "itemName":"BarieCat“柚屿”系列",
+                    "subName":"舒适的非离子材质融合充满复古韵味的混血花纹；虚化的深色边缘与瞳孔的轮廓完美融合；搭配低明度高显色的基色将酷感混血进行到底。",
+                    "brandName":"Bariecat"
+                }
+            },
+            {
+                "_index":"contact",
+                "_type":"_doc",
+                "_id":"4",
+                "_score":1,
+                "_source":{
+                    "_class":"com.entity.Contact",
+                    "id":4,
+                    "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d297c0fa4f48.jpg",
+                    "itemName":"溪悦creekeye呦呦灰_副本",
+                    "subName":"进口MPC高保湿型非离子，轻薄无感！",
+                    "brandName":"溪悦Creek eye"
+                }
+            },
+            {
+                "_index":"contact",
+                "_type":"_doc",
+                "_id":"5",
+                "_score":1,
+                "_source":{
+                    "_class":"com.entity.Contact",
+                    "id":5,
+                    "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d297b1dab839.jpg",
+                    "itemName":"溪悦creekeye呦呦灰",
+                    "subName":"进口MPC高保湿型非离子，轻薄无感！",
+                    "brandName":"溪悦Creek eye"
+                }
+            }
+        ]
+    }
+}
+```
 #### 相关度评分
+- 默认情况下，如果没有评分规则，会默认按照评分排序`"_score"`
+- 概念：相关度评分用于对搜索结果排序，评分越高则认为其结果和搜索的预期值相关度越高，即越符合搜索预期值。在7.x之前相关度评分默认使用TF/IDF算法计算而来，7.x之后默认为BM25。在核心知识篇不必关心相关评分的具体原理，只需知晓其概念即可。
+- 排序：相关度评分为搜索结果的排序依据，默认情况下评分越高，则结果越靠前。
 #### 元数据
+`"_source"`中包含的内容就是元数据
+##### 禁用元数据
+好处： 节省内存开销
+
+坏处：
+- 不支持update、update_by_query和reindex API。
+- 不支持高亮。
+- 不支持reindex、更改mapping分析器和版本升级。
+- 通过查看索引时使用的原始文档来调试查询或聚合的功能。
+- 将来有可能自动修复索引损坏。
+###### GET [index]/_search
+不查`"_source"`
+```json
+{
+  "_source" : false,
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+**总结：如果只是为了节省磁盘，可以压缩索引比禁用_source更好。**
+#### 元数据过滤器
+
+**Including：结果中返回哪些field**
+**Excluding：结果中不要返回哪些field，不返回的field不代表不能通过该字段进行检索，因为元数据不存在不代表索引不存在**
+
 #### DSL
 ### 分词器
 #### ik分词器（中文）
