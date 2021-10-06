@@ -771,7 +771,6 @@ coerce：
 不推荐 在mapping中定义过滤：支持通配符，但是这种方式不推荐，因为mapping不可变
 ###### PUT /[index]/_search
 ```json
-
 {
   "mappings": {
     "_source": {
@@ -801,7 +800,7 @@ coerce：
 ```
 ##### 查询过滤
 ###### 通过`_source`过滤  
-只包含某一字段 GET /[index]/_search
+####### 只包含某一字段 GET /[index]/_search
 ```json
 {
   "_source": "subName",
@@ -810,7 +809,7 @@ coerce：
   }
 }
 ```
-包含多个 排除多个 GET /[index]/_search
+###### 包含多个 排除多个 GET /[index]/_search
 ```json
 {
     "_source":{
