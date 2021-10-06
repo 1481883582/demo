@@ -767,7 +767,68 @@ coerce：
 
 **Including：结果中返回哪些field**
 **Excluding：结果中不要返回哪些field，不返回的field不代表不能通过该字段进行检索，因为元数据不存在不代表索引不存在**
+##### Mapping 映射过滤 
+不推荐 在mapping中定义过滤：支持通配符，但是这种方式不推荐，因为mapping不可变
+###### PUT /[index]/_search
+```json
 
+{
+  "mappings": {
+    "_source": {
+      //包含的
+      "includes": [
+        "name",
+        "price"
+      ],
+      //排除的
+      "excludes": [
+        "desc",
+        "tags"
+      ]
+    }
+  }
+}
+```
+##### `_source`常用过滤规则
+```text
+- "_source": "false", 
+- "_source": "obj.*", 
+- "_source": [ "obj1.\*", "obj2.\*" ],
+- "_source": {
+      "includes": [ "obj1.\*", "obj2.\*" ],
+      "excludes": [ "*.description" ]
+    }
+```
+##### 查询过滤
+###### 通过`_source`过滤  
+只包含某一字段 GET /[index]/_search
+```json
+{
+  "_source": "subName",
+  "query": {
+    "match_all": {}
+  }
+}
+```
+包含多个 排除多个 GET /[index]/_search
+```json
+{
+    "_source":{
+        "includes":[
+            "id",
+            "picUrl"
+        ],
+        "excludes":[
+            "subName"
+        ]
+    },
+    "query":{
+        "match_all":{
+
+        }
+    }
+}
+```
 #### DSL
 ### 分词器
 #### ik分词器（中文）
