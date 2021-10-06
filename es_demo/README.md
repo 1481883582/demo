@@ -321,8 +321,67 @@ green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    
   }
 }
 ```
-### 索引
 ### Mapping
+#### 查询映射 GET [/[index]/_mapping](127.0.0.1:9200/[index]/_mapping)
+```json
+{
+    "contact":{
+        "mappings":{
+            "properties":{
+                "_class":{
+                  //text 为映射类型
+                    "type":"text",
+                    "fields":{
+                        "keyword":{
+                            "type":"keyword",
+                            "ignore_above":256
+                        }
+                    }
+                },
+                "brandName":{
+                    "type":"text",
+                    "fields":{
+                        "keyword":{
+                            "type":"keyword",
+                            "ignore_above":256
+                        }
+                    }
+                },
+                "id":{
+                    "type":"long"
+                },
+                "itemName":{
+                    "type":"text",
+                    "fields":{
+                        "keyword":{
+                            "type":"keyword",
+                            "ignore_above":256
+                        }
+                    }
+                },
+                "picUrl":{
+                    "type":"text",
+                    "fields":{
+                        "keyword":{
+                            "type":"keyword",
+                            "ignore_above":256
+                        }
+                    }
+                },
+                "subName":{
+                    "type":"text",
+                    "fields":{
+                        "keyword":{
+                            "type":"keyword",
+                            "ignore_above":256
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
 ### 分词器
 #### ik分词器（中文）
 https://github.com/medcl/elasticsearch-analysis-ik
