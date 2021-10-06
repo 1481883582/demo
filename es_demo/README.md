@@ -185,6 +185,7 @@ green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    
             "value":1497,
             "relation":"eq"
         },
+      //当前数据最高评分
         "max_score":1,
         "hits":[
             {
