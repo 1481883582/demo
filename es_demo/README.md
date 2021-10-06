@@ -20,11 +20,11 @@
 | 黄色 | Yellow | 至少一个Replica不可用，但是所有Primary均为active，数据仍然是可以保证完整性的  |
 | 红色 | Red | 至少一个Primary为不可用状态，数据不完整，集群不可用 |
 ### 健康值查询
-#### [_cat/health](127.0.0.1:9200/_cat/health)
+#### GET [_cat/health](127.0.0.1:9200/_cat/health)
 ```json
 1633439110 13:05:10 docker-cluster green 1 1 1 1 0 0 0 0 - 100.0%
 ```
-#### [_cat/health?v](http://cc:9200/_cat/health?v)
+#### GET [_cat/health?v](http://cc:9200/_cat/health?v)
 ```json
 epoch      timestamp cluster        status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
 1633439147 13:05:47  docker-cluster green           1         1      1   1    0    0        0             0                  -                100.0%
@@ -45,7 +45,7 @@ pending_tasks//当前任务数量
 max_task_wait_time//最大的任务等待时间
 active_shards_percent//当前活动分片的百分比（当前工作分片的百分比）
 ```
-#### [_cluster/health](127.0.0.1:9200/_cluster/health)
+#### GET [_cluster/health](127.0.0.1:9200/_cluster/health)
 ```json
 {
   "cluster_name":"docker-cluster",
