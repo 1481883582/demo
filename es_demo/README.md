@@ -316,7 +316,9 @@ green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    
 ##### 指定数据修改 POST [/[index]/[type]/[id]/_update](127.0.0.1:9200/[index]/[type]/[id]/_update)
 ```json
 {
-  "itemName":"BarieCat“柚屿”系列"
+  "doc": {
+    "itemName":"BarieCat“柚屿”系列"
+  }
 }
 ```
 ### 索引
