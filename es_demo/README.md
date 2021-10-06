@@ -324,9 +324,12 @@ green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    
 ### Mapping
 #### 查询映射 GET [/[index]/_mapping](127.0.0.1:9200/[index]/_mapping)
 ```json
-{
+{   
+  //索引名
     "contact":{
+      //映射
         "mappings":{
+          //属相
             "properties":{
                 "_class":{
                   //text 为映射类型
