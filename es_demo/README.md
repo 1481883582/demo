@@ -313,7 +313,7 @@ green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    
 ##### 删除索引 DELETE [/[index]?pretty](127.0.0.1:9200/[index])
 ##### 删除索引 DELETE [/[index]/[type]/[id]](127.0.0.1:9200/[index]/[type]/[id])
 #### 修改
-##### 指定数据修改 POST [/[index]/[type]/[id]/_update](127.0.0.1:9200/[index]/[type]/[id]/_update)
+##### 指定数据修改 POST [/[index]/[type]/[id]/_update 或 /[index]/_update/[id]](127.0.0.1:9200/[index]/[type]/[id]/_update)
 ```json
 {
   "doc": {
