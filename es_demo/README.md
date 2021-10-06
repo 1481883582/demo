@@ -120,7 +120,28 @@ cd 0/index
 ##### 插入数据 PUT [/[index]/[type]/[id]](127.0.0.1:9200/[index]/[type]/[id])
 ```json
 {
-  数据
+  "id":2001,
+  "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d29b8512a04f.jpg",
+  "itemName":"BarieCat“柚屿”系列",
+  "subName":"舒适的非离子材质融合充满复古韵味的混血花纹；虚化的深色边缘与瞳孔的轮廓完美融合；搭配低明度高显色的基色将酷感混血进行到底。",
+  "brandName":"Bariecat"
+}
+```
+增加成功  返回json
+```json
+{
+"_index": "contact",
+"_type": "_doc",
+"_id": "2001",
+"_version": 1,
+"result": "created",
+"_shards": {
+"total": 1,
+"successful": 1,
+"failed": 0
+},
+"_seq_no": 1497,
+"_primary_term": 1
 }
 ```
 #### 查询索引
