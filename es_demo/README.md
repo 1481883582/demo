@@ -638,6 +638,11 @@ coerce：
 ​	**26 store：设置字段是否仅查询**
 
 ​	**27 term_vector：**运维参数
+### 搜索和查询
+#### 查询上下文
+#### 相关度评分
+#### 元数据
+#### DSL
 ### 分词器
 #### ik分词器（中文）
 https://github.com/medcl/elasticsearch-analysis-ik
