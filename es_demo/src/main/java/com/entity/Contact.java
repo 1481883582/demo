@@ -39,10 +39,9 @@ public class Contact implements Serializable {
     @TableField("sub_name")
     private String subName;
 
-//    @Field(name = "martPrice",type = FieldType.Text)
-////    @Field(name = "martPrice", type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
-//    @TableField("mart_price")
-//    private Double martPrice;
+    @Field(name = "martPrice",type = FieldType.Float)
+    @TableField("mart_price")
+    private Double martPrice;
 
     @Field(name = "brandName", type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
     @TableField("brand_name")
