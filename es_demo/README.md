@@ -139,16 +139,23 @@ cd 0/index
 返回json
 ```json
 {
+ // 代表消耗 6毫秒
     "took":6,
     "timed_out":false,
     "_shards":{
+      //一共1个
         "total":1,
+      //成功了1个
         "successful":1,
+      //跳过了0个
         "skipped":0,
+      //失败了0个
         "failed":0
     },
+  //返回结果
     "hits":{
         "total":{
+          //查到的总数量
             "value":1497,
             "relation":"eq"
         },
