@@ -167,7 +167,9 @@ green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    
 {
  // 代表消耗 6毫秒
     "took":6,
+  //代表当前请求是否超时
     "timed_out":false,
+  //分片参数
     "_shards":{
       //一共1个
         "total":1,
@@ -183,18 +185,27 @@ green  open   contact GrV-QY3cSXGoNNx9xlNDEw   1   0       1497            0    
         "total":{
           //查到的总数量
             "value":1497,
+          //关系式
             "relation":"eq"
         },
       //当前数据最高评分
         "max_score":1,
+      //返回结果
         "hits":[
             {
+                //索引名
                 "_index":"contact",
+                //索引类型
                 "_type":"_doc",
+                //索引id
                 "_id":"3",
+                //当前数据评分
                 "_score":1,
+                //具体数据
                 "_source":{
+                    //对应的类
                     "_class":"com.entity.Contact",
+                    //具体参数
                     "id":3,
                     "picUrl":"http://img01.02d.com/Public/Upload/image/20190713/5d29b8512a04f.jpg",
                     "itemName":"BarieCat“柚屿”系列",
