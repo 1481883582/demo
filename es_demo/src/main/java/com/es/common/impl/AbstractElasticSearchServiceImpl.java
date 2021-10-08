@@ -107,6 +107,21 @@ public abstract class AbstractElasticSearchServiceImpl<T, ID> implements Elastic
     }
 
     /**
+     * @return RestHighLevelClient
+     */
+    public RestHighLevelClient getRestHighLevelClient(){
+        return this.restHighLevelClient;
+    }
+
+    /**
+     *
+     * @return ElasticsearchRestTemplate
+     */
+    public ElasticsearchRestTemplate getElasticsearchRestTemplate(){
+        return this.elasticsearchRestTemplate;
+    }
+
+    /**
      * 根据id 查询
      * @param id
      * @return
