@@ -30,7 +30,7 @@ public class 最长回文子串 {
         //有变指针小于等于0  中位字符与右位字符相同   右位指针右移
         while (right < s.length() && s.charAt(mid) == s.charAt(right)) right++;
 
-        //重复字节 最左与最右位赋值
+        //过滤掉与中位重复字节后 最左与最右位赋值
         int leftMid = left, rightMid = right;
 
         //如果 左指针侧字符与右指针侧字符相同
@@ -48,6 +48,8 @@ public class 最长回文子串 {
             end = right;
         }
 
+        //中位指针 小于等于0
+        //并且达到条件后 左指针往左递归
         if (direction <= 0 && leftMid * 2 + 1 > end - start) expend(s, leftMid, -1);
         if (direction >= 0 && (s.length() - rightMid) * 2 + 1 > end - start) expend(s,  rightMid, 1);
     }
