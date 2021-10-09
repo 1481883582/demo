@@ -1,10 +1,11 @@
 public class 无线重复的最长字符串算法 {
     public static void main(String[] args) {
-        int i = lengthOfLongestSubstring("abcabcbb");
+        无线重复的最长字符串算法 bean = new 无线重复的最长字符串算法();
+        int i = bean.lengthOfLongestSubstring("abcabcbb");
         System.out.println(i);
     }
 
-    public static int lengthOfLongestSubstring(String s) {
+    public int lengthOfLongestSubstring(String s) {
         //利用ASCII 128字节
         int[] last = new int[128];
         for(int i = 0; i < 128; i++) {
@@ -13,7 +14,7 @@ public class 无线重复的最长字符串算法 {
         int n = s.length();
 
         int start = 0; // 窗口开始位置
-        int res = 0;
+        int res = 0;  //结果
 
         for(int i = 0; i < n; i++) {
             //获取 char的每一个字符 数值
