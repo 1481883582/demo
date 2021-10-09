@@ -2,7 +2,7 @@ public class 最长回文子串 {
 
     public static void main(String[] args) {
         最长回文子串 bean = new 最长回文子串();
-        String str =  bean.longestPalindrome("bbv");
+        String str = bean.longestPalindrome("abbbabb");
         System.out.println(str);
     }
 
@@ -16,8 +16,9 @@ public class 最长回文子串 {
 
     /**
      * 递归
-     * @param s  传入字符串
-     * @param mid  中位数
+     *
+     * @param s         传入字符串
+     * @param mid       中位数
      * @param direction 方向
      */
     private void expend(String s, int mid, int direction) {
@@ -48,9 +49,11 @@ public class 最长回文子串 {
             end = right;
         }
 
-        //中位指针 小于等于0
-        //并且达到条件后 左指针往左递归
+        //中位指针 小于等于0  左递归
+        //剩余的(左指针到0指针)*2+1 > 目前的长度
+        // "bbabbbccc"  假如当前leftMid是第三个a  a的下标是2   bb(2)*2+a(1) = 5  "bbabb"整好是5  所以要继续左递归
         if (direction <= 0 && leftMid * 2 + 1 > end - start) expend(s, leftMid, -1);
-        if (direction >= 0 && (s.length() - rightMid) * 2 + 1 > end - start) expend(s,  rightMid, 1);
+        //"abbbabb" 右位指针 相同道理  假如当前leftMid是第2个a  a的是4  (总长度(7) - rightMid(4) - 自己(1)) * 2 + a(1) = 5  "bbabb"整好等于5 所有要继续右递归
+        if (direction >= 0 && (s.length() - rightMid - 1) * 2 + 1 > end - start) expend(s, rightMid, 1);
     }
 }
