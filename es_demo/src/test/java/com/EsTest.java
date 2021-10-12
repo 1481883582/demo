@@ -7,6 +7,9 @@ import com.es.ContactESService;
 import com.service.ContactService;
 import com.util.ColumnUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -141,13 +144,20 @@ public class EsTest {
 	}
 
 	/**
-	 * 删除ES
+	 * 精准匹配
 	 */
 	@Test
-	public void demo(){
-		String name = ColumnUtil.getName(Contact::getSubName);
-		log.info(name);
+	public void termSearch(){
+		// 方式1
+//		TermQueryBuilder termQueryBuilder = new TermQueryBuilder("id", 3);
 
+		// 方式2
+		TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("id", 3);
+		Iterable<Contact> contacts = contactESService.search(termQueryBuilder);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
 	}
 
 }
