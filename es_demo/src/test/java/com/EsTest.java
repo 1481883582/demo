@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.entity.Contact;
 import com.es.ContactESService;
 import com.service.ContactService;
-import com.util.ColumnUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.*;
 import org.junit.Test;
