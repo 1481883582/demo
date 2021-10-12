@@ -7,9 +7,7 @@ import com.es.ContactESService;
 import com.service.ContactService;
 import com.util.ColumnUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -159,5 +157,25 @@ public class EsTest {
 			System.out.println(c.toString());
 		});
 	}
+
+	/**
+	 * 搜索
+	 */
+	@Test
+	public void search(){
+		//查询所有
+//		MatchAllQueryBuilder matchAllQueryBuilder = QueryBuilders.matchAllQuery();
+
+
+		//单一字段分词搜索
+		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("itemName", "灰 a");
+		Iterable<Contact> contacts = contactESService.search(matchQueryBuilder);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
+	}
+
+
 
 }
