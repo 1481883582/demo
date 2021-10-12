@@ -1,11 +1,11 @@
-package com.dto;
-
-import java.lang.annotation.*;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-@Documented
-@Inherited
-public @interface EsDataId {
-
-}
+//package com.dto;
+//
+//import java.lang.annotation.*;
+//
+//@Retention(RetentionPolicy.RUNTIME)
+//@Target(ElementType.FIELD)
+//@Documented
+//@Inherited
+//public @interface EsDataId {
+//
+//}
