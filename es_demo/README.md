@@ -851,7 +851,25 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-##### match_all: 匹配所有结果的子句
+##### match_all: 搜索所有
+```text
+GET contact/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+```
+Java
+```java
+//查询所有
+MatchAllQueryBuilder matchAllQueryBuilder = QueryBuilders.matchAllQuery();
+Iterable<Contact> contacts = contactESService.search(matchQueryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
 ##### multi_match: 多个字段条件
 ##### match_phrase: 短语查询，匹配包含查询短语中所有词性的子句
 ### 分词器
