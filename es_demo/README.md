@@ -829,6 +829,31 @@ coerce：
 }
 ```
 #### DSL
+##### match: 普通搜索，分词包含最多的最前
+按照评分排序
+```json lines
+GET contact/_search
+{
+  "query": {
+    "match": {
+      "subName": "舒服"
+    }
+  }
+}
+```
+Java
+```Java
+//单一字段分词搜索
+MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("subName", "舒服");
+Iterable<Contact> contacts = contactESService.search(matchQueryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
+##### match_all: 匹配所有结果的子句
+##### multi_match: 多个字段条件
+##### match_phrase: 短语查询，匹配包含查询短语中所有词性的子句
 ### 分词器
 #### ik分词器（中文）
 https://github.com/medcl/elasticsearch-analysis-ik

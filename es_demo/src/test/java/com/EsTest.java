@@ -167,12 +167,18 @@ public class EsTest {
 
 
 		//单一字段分词搜索
-		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("itemName", "灰 a");
+		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("subName", "舒服");
 		Iterable<Contact> contacts = contactESService.search(matchQueryBuilder);
 
 		contacts.forEach((c)->{
 			System.out.println(c.toString());
 		});
+	}
+
+	@Test
+	public void match(){
+
+
 	}
 
 
