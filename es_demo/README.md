@@ -829,7 +829,8 @@ coerce：
 }
 ```
 #### DSL
-##### match: 普通搜索，分词包含最多的最前
+##### 全文检索
+###### match: 普通搜索，分词包含最多的最前
 按照评分排序
 ```text
 GET contact/_search
@@ -851,7 +852,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-##### match_all: 搜索所有
+###### match_all: 搜索所有
 ```text
 GET contact/_search
 {
@@ -870,7 +871,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-##### multi_match: 多个字段搜索一个内容
+###### multi_match: 多个字段搜索一个内容
 类似于  mysql   a in（1）or b in（1）
 ```text
 GET contact/_search
@@ -893,7 +894,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-##### match_phrase: 短语搜索，搜索语句不会被分词
+###### match_phrase: 短语搜索，搜索语句不会被分词
 ```text
 GET contact/_search
 {
@@ -914,6 +915,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
+##### 精准匹配
 ### 分词器
 ```text
 GET _analyze
