@@ -831,7 +831,7 @@ coerce：
 #### DSL
 ##### match: 普通搜索，分词包含最多的最前
 按照评分排序
-```json lines
+```text
 GET contact/_search
 {
   "query": {
