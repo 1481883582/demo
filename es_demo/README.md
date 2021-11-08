@@ -915,6 +915,33 @@ contacts.forEach((c)->{
 });
 ```
 ### 分词器
+```text
+GET _analyze
+{
+  "text": "王牌"
+}
+```
+分词结果
+```json
+{
+  "tokens" : [
+    {
+      "token" : "王",
+      "start_offset" : 0,
+      "end_offset" : 1,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 0
+    },
+    {
+      "token" : "牌",
+      "start_offset" : 1,
+      "end_offset" : 2,
+      "type" : "<IDEOGRAPHIC>",
+      "position" : 1
+    }
+  ]
+}
+```
 #### ik分词器（中文）
 https://github.com/medcl/elasticsearch-analysis-ik
 
