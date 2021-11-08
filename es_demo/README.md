@@ -828,8 +828,8 @@ coerce：
     }
 }
 ```
-#### DSL
-##### 全文检索
+#### DSL（Domain Specific Language）
+##### 全文检索 fulltext search
 ###### match: 普通搜索，分词包含最多的最前
 按照评分排序
 ```text
@@ -915,7 +915,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-##### 精准匹配
+##### 精准匹配 exact match
 ### 分词器
 ```text
 GET _analyze
