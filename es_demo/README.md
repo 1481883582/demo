@@ -949,8 +949,59 @@ GET contact/_search
   }
 }
 ```
-###### terms 匹配和搜索词项列表中任意项匹配的结果
+###### terms 搜错包含月或新的精准搜索
+```text
+GET contact/_search
+{
+  "query": {
+    "terms": {
+      "subName": [
+        "月",
+        "新"
+      ]
+    }
+  }
+}
+```
+Java
+```java
+// 精准搜索多个词
+QueryBuilder termQuery = QueryBuilders.termsQuery("subName", "月", "新");
+Iterable<Contact> contacts = contactESService.search(termQuery);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
 ###### range 范围查找
+gte：　　大于或等于
+gt：　　 大于
+lte：　　小于或等于
+lt：　　   小于
+boost：　　设置查询的提升值，默认为1.0
+```text
+GET contact/_search
+{
+  "query": {
+    "range": {
+      "martPrice": {
+        "gte": 10,
+        "lte": 200
+      }
+    }
+  }
+}
+```
+Java
+```java
+// 范围搜索  搜索大于等于10 并且小于等于200 的价格
+QueryBuilder termQuery = QueryBuilders.rangeQuery("martPrice").gte(10).lte(200);
+Iterable<Contact> contacts = contactESService.search(termQuery);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
 ### 分词器
 ```text
 GET _analyze

@@ -186,7 +186,14 @@ public class EsTest {
 	@Test
 	public void term(){
 		//精准搜索  搜索条件没被分词 如果搜索内容被分词，只能搜到单个词
-		QueryBuilder termQuery = QueryBuilders.termQuery("subName", "小");
+//		QueryBuilder termQuery = QueryBuilders.termQuery("subName", "小");
+
+		// 精准搜索多个词
+//		QueryBuilder termQuery = QueryBuilders.termsQuery("subName", "月", "新");
+
+
+		// 范围搜索  搜索大于等于10 并且小于等于200 的价格
+		QueryBuilder termQuery = QueryBuilders.rangeQuery("martPrice").gte(10).lte(200);
 		Iterable<Contact> contacts = contactESService.search(termQuery);
 
 		contacts.forEach((c)->{
