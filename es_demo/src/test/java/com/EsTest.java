@@ -165,13 +165,14 @@ public class EsTest {
 		//查询所有
 //		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
 
-
 		//单一字段分词搜索
 //		QueryBuilder queryBuilder = QueryBuilders.matchQuery("subName", "舒服");
-//		Iterable<Contact> contacts = contactESService.search(queryBuilder);
 
 		//subName or itemName contains "系列"
-		QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("系列", "subName", "itemName");
+//		QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("系列", "subName", "itemName");
+
+		//搜索value不会被分词
+		QueryBuilder queryBuilder = QueryBuilders.matchPhraseQuery("subName", "喜欢小直径");
 		Iterable<Contact> contacts = contactESService.search(queryBuilder);
 
 		contacts.forEach((c)->{

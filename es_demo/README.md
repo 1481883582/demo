@@ -870,7 +870,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-##### multi_match: 多个字段条件
+##### multi_match: 多个字段搜索一个内容
 类似于  mysql   a in（1）or b in（1）
 ```text
 GET contact/_search
@@ -893,7 +893,27 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-##### match_phrase: 短语查询，匹配包含查询短语中所有词性的子句
+##### match_phrase: 短语搜索，搜索语句不会被分词
+```text
+GET contact/_search
+{
+  "query": {
+    "match_phrase": {
+      "subName": "喜欢小直径"
+    }
+  }
+}
+```
+Java
+```java
+//搜索value不会被分词  
+QueryBuilder queryBuilder = QueryBuilders.matchPhraseQuery("subName", "喜欢小直径");
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
 ### 分词器
 #### ik分词器（中文）
 https://github.com/medcl/elasticsearch-analysis-ik
