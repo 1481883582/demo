@@ -180,10 +180,18 @@ public class EsTest {
 		});
 	}
 
+	/**
+	 * 精准搜索
+	 */
 	@Test
-	public void match(){
+	public void term(){
+		//精准搜索  搜索条件没被分词 如果搜索内容被分词，只能搜到单个词
+		QueryBuilder termQuery = QueryBuilders.termQuery("subName", "小");
+		Iterable<Contact> contacts = contactESService.search(termQuery);
 
-
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
 	}
 
 
