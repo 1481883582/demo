@@ -163,12 +163,16 @@ public class EsTest {
 	@Test
 	public void search(){
 		//查询所有
-//		MatchAllQueryBuilder matchAllQueryBuilder = QueryBuilders.matchAllQuery();
+//		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
 
 
 		//单一字段分词搜索
-		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("subName", "舒服");
-		Iterable<Contact> contacts = contactESService.search(matchQueryBuilder);
+//		QueryBuilder queryBuilder = QueryBuilders.matchQuery("subName", "舒服");
+//		Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+		//subName or itemName contains "系列"
+		QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("系列", "subName", "itemName");
+		Iterable<Contact> contacts = contactESService.search(queryBuilder);
 
 		contacts.forEach((c)->{
 			System.out.println(c.toString());

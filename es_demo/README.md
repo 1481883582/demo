@@ -844,7 +844,7 @@ GET contact/_search
 Java
 ```Java
 //单一字段分词搜索
-MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("subName", "舒服");
+QueryBuilder queryBuilder = QueryBuilders.matchQuery("subName", "舒服");
 Iterable<Contact> contacts = contactESService.search(matchQueryBuilder);
 
 contacts.forEach((c)->{
@@ -863,14 +863,36 @@ GET contact/_search
 Java
 ```java
 //查询所有
-MatchAllQueryBuilder matchAllQueryBuilder = QueryBuilders.matchAllQuery();
-Iterable<Contact> contacts = contactESService.search(matchQueryBuilder);
+QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
 
 contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
 ##### multi_match: 多个字段条件
+类似于  mysql   a in（1）or b in（1）
+```text
+GET contact/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "系列",
+      "fields": ["itemName", "subName"]
+    }
+  }
+}
+```
+Java
+```java
+//subName or itemName contains "系列"
+QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery("系列", "subName", "itemName");
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
 ##### match_phrase: 短语查询，匹配包含查询短语中所有词性的子句
 ### 分词器
 #### ik分词器（中文）
