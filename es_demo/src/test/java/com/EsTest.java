@@ -6,7 +6,9 @@ import com.entity.Contact;
 import com.es.ContactESService;
 import com.service.ContactService;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -195,6 +197,25 @@ public class EsTest {
 		// 范围搜索  搜索大于等于10 并且小于等于200 的价格
 		QueryBuilder termQuery = QueryBuilders.rangeQuery("martPrice").gte(10).lte(200);
 		Iterable<Contact> contacts = contactESService.search(termQuery);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
+	}
+
+	/**
+	 * 包裹查询, 高于设定分数, 不计算相关性
+	 */
+	@Test
+	public void filter(){
+		//第一种嵌套filter
+//		QueryBuilder queryBuilder = QueryBuilders.constantScoreQuery(QueryBuilders.termQuery("subName", "小"));
+
+		//第二中嵌套filler
+		QueryBuilder queryBuilder = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("subName", "小"));
+		log.info(queryBuilder.toString());
+		Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
 
 		contacts.forEach((c)->{
 			System.out.println(c.toString());
