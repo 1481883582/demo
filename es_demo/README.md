@@ -1096,6 +1096,83 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
+##### bool query 组合查询
+**bool**：可以组合多个查询条件，bool查询也是采用more_matches_is_better的机制，因此满足must和should子句的文档将会合并起来计算分值
+- **must**：必须满足子句（查询）必须出现在匹配的文档中，并将有助于得分。
+- **filter**：过滤器 不计算相关度分数，cache☆子句（查询）必须出现在匹配的文档中。但是不像 must查询的分数将被忽略。Filter子句在[filter上下文](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html)中执行，这意味着计分被忽略，并且子句被考虑用于缓存。
+- **should**：可能满足 or子句（查询）应出现在匹配的文档中。
+- **must_not**：必须不满足 不计算相关度分数  not子句（查询）不得出现在匹配的文档中。子句在[过滤器上下文](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html)中执行，这意味着计分被忽略，并且子句被视为用于缓存。由于忽略计分，0因此将返回所有文档的分数。
+- **minimum_should_match**：参数指定should返回的文档必须匹配的子句的数量或百分比。如果bool查询包含至少一个should子句，而没有must或 filter子句，则默认值为1。否则，默认值为0
+###### must 
+```text
+GET contact/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "picUrl" : "5d270717cf502"
+          }
+        },{
+          "match": {
+            "subName": "7款"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+Java
+```java
+BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.must(QueryBuilders.matchQuery("picUrl", "5d270717cf502"))
+				.must(QueryBuilders.matchQuery("subName", "7款"));
+		
+log.info(queryBuilder.toString());
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
+###### filter 组合查询
+与上面的区别就是filter没有评分
+```text
+GET contact/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "match": {
+            "picUrl" : "5d270717cf502"
+          }
+        },{
+          "match": {
+            "subName": "7款"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+Java
+```java
+BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.filter(QueryBuilders.matchQuery("picUrl", "5d270717cf502"))
+				.filter(QueryBuilders.matchQuery("subName", "7款"));
+
+log.info(queryBuilder.toString());
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
+
 #### ik分词器（中文）
 https://github.com/medcl/elasticsearch-analysis-ik
 

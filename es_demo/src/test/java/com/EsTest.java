@@ -222,6 +222,40 @@ public class EsTest {
 		});
 	}
 
+	/**
+	 * 组合查询中的Must
+	 */
+	@Test
+	public void boolMust(){
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.must(QueryBuilders.matchQuery("picUrl", "5d270717cf502"))
+				.must(QueryBuilders.matchQuery("subName", "7款"));
+
+		log.info(queryBuilder.toString());
+		Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
+	}
+
+	/**
+	 * 组合查询中的Filter(与上面的区别就是Filter没有评分)
+	 */
+	@Test
+	public void boolFilter(){
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.filter(QueryBuilders.matchQuery("picUrl", "5d270717cf502"))
+				.filter(QueryBuilders.matchQuery("subName", "7款"));
+
+		log.info(queryBuilder.toString());
+		Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
+	}
+
 
 
 }
