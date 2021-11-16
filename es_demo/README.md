@@ -1103,7 +1103,7 @@ contacts.forEach((c)->{
 - **should**：可能满足 or子句（查询）应出现在匹配的文档中。
 - **must_not**：必须不满足 不计算相关度分数  not子句（查询）不得出现在匹配的文档中。子句在[过滤器上下文](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html)中执行，这意味着计分被忽略，并且子句被视为用于缓存。由于忽略计分，0因此将返回所有文档的分数。
 - **minimum_should_match**：参数指定should返回的文档必须匹配的子句的数量或百分比。如果bool查询包含至少一个should子句，而没有must或 filter子句，则默认值为1。否则，默认值为0
-###### must 
+###### must and
 ```text
 GET contact/_search
 {
@@ -1137,7 +1137,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-###### filter 组合查询
+###### filter 组合查询 （高效率的and  不计算评分）
 与上面的区别就是filter没有评分
 ```text
 GET contact/_search
@@ -1165,6 +1165,119 @@ BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
 				.filter(QueryBuilders.matchQuery("picUrl", "5d270717cf502"))
 				.filter(QueryBuilders.matchQuery("subName", "7款"));
 
+log.info(queryBuilder.toString());
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
+###### must_not(不包含  not)
+```text
+GET contact/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match": {
+            "itemName" : "系列"
+          }
+        },{
+          "match": {
+            "subName": "7款"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+Java
+```java
+BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.mustNot(QueryBuilders.matchQuery("picUrl", "5d270717cf502"))
+				.mustNot(QueryBuilders.matchQuery("subName", "7款"));
+
+log.info(queryBuilder.toString());
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
+###### should （or）
+```text
+GET contact/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "itemName" : "CoverPinky Betty系列"
+          }
+        },{
+          "term": {
+            "subName": "这款很像一颗干净的玻璃球 但其实非常日常！ ​"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+Java
+```java
+BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.should(QueryBuilders.matchQuery("itemName", "CoverPinky Betty系列"))
+				.should(QueryBuilders.matchQuery("subName", "这款很像一颗干净的玻璃球 但其实非常日常！ ​"));
+
+log.info(queryBuilder.toString());
+Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+contacts.forEach((c)->{
+    System.out.println(c.toString());
+});
+```
+###### minimum_should_match (当should 或filter 时生效 ---满足条件的数量)
+生效条件 1为should中满足其1 filter中满足其1
+```text
+GET contact/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "itemName": "CoverPinky Betty系列"
+          }
+        },
+        {
+          "term": {
+            "subName": "这款很像一颗干净的玻璃球 但其实非常日常！ ​"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "match": {
+            "brandName": "Bearcon"
+          }
+        }
+      ],
+      "minimum_should_match": 1
+    }
+  }
+}
+```
+Java
+```java
+BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.should(QueryBuilders.matchQuery("itemName", "CoverPinky Betty系列"))
+				.should(QueryBuilders.matchQuery("subName", "这款很像一颗干净的玻璃球 但其实非常日常！ ​"))
+				.filter(QueryBuilders.matchQuery("brandName","Bearcon"))
+				.minimumShouldMatch(1);//生效条件 1为should中满足其1 filter中满足其1
 log.info(queryBuilder.toString());
 Iterable<Contact> contacts = contactESService.search(queryBuilder);
 

@@ -257,5 +257,60 @@ public class EsTest {
 	}
 
 
+	/**
+	 * 组合查询中的mustNot(不包含 非 is not)
+	 */
+	@Test
+	public void boolNotMust(){
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.mustNot(QueryBuilders.matchQuery("picUrl", "5d270717cf502"))
+				.mustNot(QueryBuilders.matchQuery("subName", "7款"));
+
+		log.info(queryBuilder.toString());
+		Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
+	}
+
+	/**
+	 * 组合查询中的should(或  or)
+	 */
+	@Test
+	public void boolShould(){
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.should(QueryBuilders.matchQuery("itemName", "CoverPinky Betty系列"))
+				.should(QueryBuilders.matchQuery("subName", "这款很像一颗干净的玻璃球 但其实非常日常！ ​"));
+
+		log.info(queryBuilder.toString());
+		Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
+	}
+
+	/**
+	 * 当should 或filter 时生效 ---满足条件的数量
+	 */
+	@Test
+	public void boolminimumShouldMatch(){
+		BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
+				.should(QueryBuilders.matchQuery("itemName", "CoverPinky Betty系列"))
+				.should(QueryBuilders.matchQuery("subName", "这款很像一颗干净的玻璃球 但其实非常日常！ ​"))
+				.filter(QueryBuilders.matchQuery("brandName","Bearcon"))
+				.minimumShouldMatch(2);//生效条件 1为should中满足其1 filter中满足其1
+		log.info(queryBuilder.toString());
+		Iterable<Contact> contacts = contactESService.search(queryBuilder);
+
+		contacts.forEach((c)->{
+			System.out.println(c.toString());
+		});
+	}
+
+
+
+
 
 }
