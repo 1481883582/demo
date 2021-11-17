@@ -915,9 +915,9 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-## [精准匹配 exact match（不进行分词）]()
-## [range 范围查找]()
-## [过滤器 filter （筛选数据）]()
+## [精准匹配 exact match（不进行分词）](https://gitee.com/valuenull/java-demo/blob/master/es_demo/%E7%B2%BE%E5%87%86%E5%8C%B9%E9%85%8D%20exact%20match%EF%BC%88%E4%B8%8D%E8%BF%9B%E8%A1%8C%E5%88%86%E8%AF%8D%EF%BC%89.md)
+## [range 范围查找](https://gitee.com/valuenull/java-demo/blob/master/es_demo/range%20%E8%8C%83%E5%9B%B4%E6%9F%A5%E6%89%BE.md)
+## [过滤器 filter （筛选数据）](https://gitee.com/valuenull/java-demo/blob/master/es_demo/%E8%BF%87%E6%BB%A4%E5%99%A8%20filter.md)
 ## [组合查询](https://gitee.com/valuenull/java-demo/blob/master/es_demo/%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2.md)
 ## [分词器](https://gitee.com/valuenull/java-demo/blob/master/es_demo/%E5%88%86%E8%AF%8D%E5%99%A8.md)
 ### 聚合
