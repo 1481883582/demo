@@ -1285,7 +1285,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-#### [分词器](https://github.com/medcl/elasticsearch-analysis-ik)
+#### [分词器](https://gitee.com/valuenull/java-demo/blob/master/es_demo/%E5%88%86%E8%AF%8D%E5%99%A8.md)
 ### 聚合
 ### Elasticsearch 客户端 & Java API
 #### 简单介绍
