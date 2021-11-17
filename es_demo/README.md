@@ -1002,13 +1002,6 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-### 分词器
-```text
-GET _analyze
-{
-  "text": "王牌"
-}
-```
 分词结果
 ```json
 {
