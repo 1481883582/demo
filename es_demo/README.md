@@ -1096,8 +1096,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-## [组合查询]()
-
+## [组合查询](https://gitee.com/valuenull/java-demo/blob/master/es_demo/%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2.md)
 ## [分词器](https://gitee.com/valuenull/java-demo/blob/master/es_demo/%E5%88%86%E8%AF%8D%E5%99%A8.md)
 ### 聚合
 ### Elasticsearch 客户端 & Java API
