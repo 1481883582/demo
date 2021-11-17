@@ -1285,18 +1285,7 @@ contacts.forEach((c)->{
     System.out.println(c.toString());
 });
 ```
-
-#### ik分词器（中文）
-https://github.com/medcl/elasticsearch-analysis-ik
-
-#### 文档正常化: normalization
-#### 字符过滤器: character filter
-#### 令牌过滤器: token filter
-#### 分词器: tokenizer
-#### 自定义分词器
-#### 中文分词器
-#### 基于远程词库的热更新
-#### 基于MySQL的热更新
+#### [分词器](https://github.com/medcl/elasticsearch-analysis-ik)
 ### 聚合
 ### Elasticsearch 客户端 & Java API
 #### 简单介绍
