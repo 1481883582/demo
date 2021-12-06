@@ -31,3 +31,7 @@ Flume 自带两种Channel，Memory Channel和File Channel以及KafkaChannel。
 File Channel 将所有事件写到磁盘。因此在程序关闭或机器宕机的情况下不会丢失数据
 ````
 ### Event
+```text
+传输单元，Flume数据传输的基本单元，以Event的形式将珊瑚橘从源头送至目的地。Event由Header和Body两部分组成。Header用来存放改event的一些属性，为K-V结构。Body用来存放该数据。形式为字节数组。
+```
+![event.png](src/main/resources/img/event.png)
