@@ -26,6 +26,8 @@ Sink 组件目的包括hdfs、logger、acro、thrift、ipc、file、HBase、solr
 ```
 ### Channel
 ````text
-
+Channel 是位于Source和Sink之间的缓冲区、因此，Channel允许Source和Sink运作在不同的速率上。Channel是线程安全的，可以同时处理几个Source的写入操作和几个Sink的读写操作
+Flume 自带两种Channel，Memory Channel和File Channel以及KafkaChannel。
+File Channel 将所有事件写到磁盘。因此在程序关闭或机器宕机的情况下不会丢失数据
 ````
 ### Event
