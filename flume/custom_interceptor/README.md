@@ -41,6 +41,7 @@ a1.channels.c1.transactionCapacity = 100
 a1.sources.r1.channels = c1
 a1.sinks.k1.channel = c1
 ```
+### 注意配置环境变量
 ### Windows命令
 ```bash 
 flume-ng agent -c D:\idea\apache-flume-1.8.0-bin\conf -f D:\idea\apache-flume-1.8.0-bin\conf\example.conf -n a1
