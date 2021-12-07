@@ -35,3 +35,34 @@ File Channel 将所有事件写到磁盘。因此在程序关闭或机器宕机�
 传输单元，Flume数据传输的基本单元，以Event的形式将珊瑚橘从源头送至目的地。Event由Header和Body两部分组成。Header用来存放改event的一些属性，为K-V结构。Body用来存放该数据。形式为字节数组。
 ```
 ![event.png](src/main/resources/img/event.png)
+## 安装
+## 配置
+```bash
+# example.conf: A single-node Flume configuration
+# 每个文件都是一个Agent  每个Agent都是一个JVM
+# Name the components on this agent
+a1.sources = r1
+a1.sinks = k1
+a1.channels = c1
+
+# Describe/configure the source
+# 数据源的配置
+a1.sources.r1.type = netcat
+a1.sources.r1.bind = localhost
+a1.sources.r1.port = 44444
+
+# Describe the sink
+# sink配置
+a1.sinks.k1.type = logger
+
+# Use a channel which buffers events in memory
+# channel的配置
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 1000
+a1.channels.c1.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+# 绑定 sources-sinks-channels之间的关系
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
+```
