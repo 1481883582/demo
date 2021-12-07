@@ -73,3 +73,4 @@ a1.sinks.k1.channel = c1
 ## [内部流程](内部流程.md)
 ## [Flume Channel Selectors](Flume Channel Selectors.md)
 ## [Flume Sink Processors](Flume Sink Processors.md)
+## [负载均衡与聚合](负载均衡与聚合.md)
