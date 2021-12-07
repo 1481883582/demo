@@ -6,7 +6,7 @@ Flume 最早是Cludera提供的日志收集系统，后贡献给Apache。所以�
 
 Flume 是一个高可用的，高可靠的，鲁棒性（robust健壮性），分布式的海量日志采集、聚合和传输的系统，Flume支持在日志系统中定制各类数据发送方，用于收集数据（source）；同时，Flume提供对数据进行简单处理，并写到各种数据接受仿的能力（sink）。
 ```
-![img.png](src/main/resources/img/img.png)
+![img.png](resources/img/img.png)
 ```text
 flume是分布式的日志收集系统，它将各个服务器中的数据收集起来并送到指定的地方去，比如说送到图中的HDFS，简单来说flume就是收集日志的。
 ```
@@ -34,7 +34,7 @@ File Channel 将所有事件写到磁盘。因此在程序关闭或机器宕机�
 ```text
 传输单元，Flume数据传输的基本单元，以Event的形式将珊瑚橘从源头送至目的地。Event由Header和Body两部分组成。Header用来存放改event的一些属性，为K-V结构。Body用来存放该数据。形式为字节数组。
 ```
-![event.png](src/main/resources/img/event.png)
+![event.png](resources/img/event.png)
 ## 安装
 ## 配置
 ```bash
