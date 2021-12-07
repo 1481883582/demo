@@ -57,8 +57,11 @@ a1.sinks.k1.type = logger
 
 # Use a channel which buffers events in memory
 # channel的配置
+# memory内存 类型
 a1.channels.c1.type = memory
+# capacity 通道中最大事件数
 a1.channels.c1.capacity = 1000
+# transactionCapacity 每个事务通道从源接受或发送给接收器的最大事件数
 a1.channels.c1.transactionCapacity = 100
 
 # Bind the source and sink to the channel
