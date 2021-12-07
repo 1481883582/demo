@@ -70,3 +70,4 @@ a1.sources.r1.channels = c1
 a1.sinks.k1.channel = c1
 ```
 ## [事务](事务.md)
+## [内部流程](内部流程.md)
