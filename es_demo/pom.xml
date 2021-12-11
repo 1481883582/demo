@@ -17,6 +17,13 @@
     </properties>
 
     <dependencies>
+        <!--    神通数据库    -->
+        <dependency>
+            <groupId>shen.tong</groupId>
+            <artifactId>oscarJDBC16</artifactId>
+            <version>0.0.1</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <!--MyBatis-Plus启动器-->
         <dependency>

@@ -21,7 +21,6 @@ public class CustomSink extends AbstractSink implements Configurable {
      *
      * @param context
      */
-    @Override
     public void configure(Context context) {
         //获取前缀 有默认值
         prefix = context.getString(PREFIX, "defaultPrefix");
@@ -48,7 +47,6 @@ public class CustomSink extends AbstractSink implements Configurable {
      * @return
      * @throws EventDeliveryException
      */
-    @Override
     public Status process() throws EventDeliveryException {
         Status status = null;
 

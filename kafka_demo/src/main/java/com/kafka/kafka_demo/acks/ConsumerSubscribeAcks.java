@@ -21,7 +21,7 @@ public class ConsumerSubscribeAcks {
         //创建KafkaAdminClient
         Properties properties = new Properties();
         //kafka 服务器可以多个  0.0.0.0:8080,0.0.0.0:8080
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "test:9092");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "cdh01.example.com:9092,cdh02.example.com:9092,cdh03.example.com:9092");
         //key传递反序列化规则
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         //value传递反序列化规则

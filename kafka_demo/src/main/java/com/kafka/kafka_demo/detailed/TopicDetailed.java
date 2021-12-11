@@ -3,6 +3,7 @@ package com.kafka.kafka_demo.detailed;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -14,7 +15,7 @@ public class TopicDetailed {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         //创建KafkaAdminClient
         Properties properties = new Properties();
-        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "test:9092");
+        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "cdh01.example.com:9092,cdh02.example.com:9092,cdh03.example.com:9092");
 
         KafkaAdminClient adminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
 
@@ -47,6 +48,7 @@ public class TopicDetailed {
             log.info(k);
             //详细 (name=aa, internal=false, partitions=(partition=0, leader=8.130.166.84:9092 (id: 0 rack: null), replicas=8.130.166.84:9092 (id: 0 rack: null), isr=8.130.166.84:9092 (id: 0 rack: null)), authorizedOperations=null)
             log.info(v.toString());
+
         });
 
 

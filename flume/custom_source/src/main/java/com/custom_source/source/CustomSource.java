@@ -24,7 +24,6 @@ public class CustomSource extends AbstractSource implements Configurable, Pollab
      * 获取配置文件中的信息
      * @param context
      */
-    @Override
     public void configure(Context context) {
         //获取前缀 有默认值
         prefix = context.getString(PREFIX, "defaultPrefix");
@@ -49,7 +48,6 @@ public class CustomSource extends AbstractSource implements Configurable, Pollab
      * @throws EventDeliveryException
      */
     @SneakyThrows
-    @Override
     public Status process() throws EventDeliveryException {
 
         Status status = null;
@@ -59,7 +57,7 @@ public class CustomSource extends AbstractSource implements Configurable, Pollab
             //拼接数据
             StringBuilder sb = new StringBuilder()
                     .append(prefix)
-                    .append(String.valueOf(System.currentTimeMillis()))
+                    .append(System.currentTimeMillis())
                     .append(suffix);
 
 
