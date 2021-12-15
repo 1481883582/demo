@@ -46,8 +46,14 @@ public class CreateThread extends Thread{
 5.ThreadPoolExecutor:普通线程池类,包含最基本的一些线程池操作相关的方法实现:
 6.ScheduledThreadPoolExecutor:定时任务线程池类,用于实现定时任务相关功能;
 7.ForkJoinPool:新型线程池类,java7中 新增的线程池类,基于工作窃取理论实现,运用于大任务拆小任务,任务无限多的场景;
+8.Excutors:线程池工具类，定义一些快速实现线程池的方法
 ```
-![img.png](resources/img.png)
+![img.png](src/resources/img.png)
+## Excutors
+```text
+1.阿里建议禁用
+2.内部调用的是 ScheduledExecutorService;ThreadPoolExecutor;ForkJoinPool;
+```
 ## ThreadPoolExecutor
 ## ScheduledThreadPoolExecutor
 ## ForkJoinPool
