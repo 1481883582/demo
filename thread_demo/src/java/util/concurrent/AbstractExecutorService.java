@@ -194,31 +194,54 @@ public abstract class AbstractExecutorService implements ExecutorService {
         return doInvokeAny(tasks, true, unit.toNanos(timeout));
     }
 
+    /**
+     * 执行多个线程
+     * @param tasks  线程任务
+     * @param <T>   线程实体类
+     * @return
+     * @throws InterruptedException
+     */
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks)
         throws InterruptedException {
-        if (tasks == null)
-            throw new NullPointerException();
+
+        //如果为null 抛异常
+        if (tasks == null) throw new NullPointerException();
+
+        //声明与任务相同的list  保存标记
         ArrayList<Future<T>> futures = new ArrayList<Future<T>>(tasks.size());
+
+        //状态未完毕
         boolean done = false;
         try {
+            //遍历任务
             for (Callable<T> t : tasks) {
+                //创建 线程标记任务
                 RunnableFuture<T> f = newTaskFor(t);
+                //增加标记
                 futures.add(f);
+                //执行
                 execute(f);
             }
+
+            //遍历标记
             for (int i = 0, size = futures.size(); i < size; i++) {
+                //获取标记结果
                 Future<T> f = futures.get(i);
+                //如果没有完成
                 if (!f.isDone()) {
                     try {
+                        //等待完成
                         f.get();
                     } catch (CancellationException ignore) {
                     } catch (ExecutionException ignore) {
                     }
                 }
             }
+            //状态设为完成
             done = true;
             return futures;
         } finally {
+            //如果出现异常导致未完成 全部取消（取消已完成的毫无意义）
             if (!done)
                 for (int i = 0, size = futures.size(); i < size; i++)
                     futures.get(i).cancel(true);
