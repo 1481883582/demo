@@ -20,7 +20,7 @@ import java.util.List;
  * <p><b>Extension example</b>. Here is a sketch of a class
  * that customizes {@link ThreadPoolExecutor} to use
  * a {@code CustomTask} class instead of the default {@code FutureTask}:
- *  <pre> {@code
+ * <pre> {@code
  * public class CustomThreadPoolExecutor extends ThreadPoolExecutor {
  *
  *   static class CustomTask<V> implements RunnableFuture<V> {...}
@@ -34,8 +34,8 @@ import java.util.List;
  *   // ... add constructors, etc.
  * }}</pre>
  *
- * @since 1.5
  * @author Doug Lea
+ * @since 1.5
  */
 public abstract class AbstractExecutorService implements ExecutorService {
 
@@ -44,8 +44,8 @@ public abstract class AbstractExecutorService implements ExecutorService {
      * value.
      *
      * @param runnable the runnable task being wrapped
-     * @param value the default value for the returned future
-     * @param <T> the type of the given value
+     * @param value    the default value for the returned future
+     * @param <T>      the type of the given value
      * @return a {@code RunnableFuture} which, when run, will run the
      * underlying runnable and which, as a {@code Future}, will yield
      * the given value as its result and provide for cancellation of
@@ -60,7 +60,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
      * Returns a {@code RunnableFuture} for the given callable task.
      *
      * @param callable the callable task being wrapped
-     * @param <T> the type of the callable's result
+     * @param <T>      the type of the callable's result
      * @return a {@code RunnableFuture} which, when run, will call the
      * underlying callable and which, as a {@code Future}, will yield
      * the callable's result as its result and provide for
@@ -109,7 +109,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
      */
     private <T> T doInvokeAny(Collection<? extends Callable<T>> tasks,
                               boolean timed, long nanos)
-        throws InterruptedException, ExecutionException, TimeoutException {
+            throws InterruptedException, ExecutionException, TimeoutException {
         if (tasks == null)
             throw new NullPointerException();
         int ntasks = tasks.size();
@@ -117,7 +117,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
             throw new IllegalArgumentException();
         ArrayList<Future<T>> futures = new ArrayList<Future<T>>(ntasks);
         ExecutorCompletionService<T> ecs =
-            new ExecutorCompletionService<T>(this);
+                new ExecutorCompletionService<T>(this);
 
         // For efficiency, especially in executors with limited
         // parallelism, check to see if previously submitted tasks are
@@ -137,23 +137,21 @@ public abstract class AbstractExecutorService implements ExecutorService {
             --ntasks;
             int active = 1;
 
-            for (;;) {
+            for (; ; ) {
                 Future<T> f = ecs.poll();
                 if (f == null) {
                     if (ntasks > 0) {
                         --ntasks;
                         futures.add(ecs.submit(it.next()));
                         ++active;
-                    }
-                    else if (active == 0)
+                    } else if (active == 0)
                         break;
                     else if (timed) {
                         f = ecs.poll(nanos, TimeUnit.NANOSECONDS);
                         if (f == null)
                             throw new TimeoutException();
                         nanos = deadline - System.nanoTime();
-                    }
-                    else
+                    } else
                         f = ecs.take();
                 }
                 if (f != null) {
@@ -179,7 +177,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
     }
 
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks)
-        throws InterruptedException, ExecutionException {
+            throws InterruptedException, ExecutionException {
         try {
             return doInvokeAny(tasks, false, 0);
         } catch (TimeoutException cannotHappen) {
@@ -190,24 +188,25 @@ public abstract class AbstractExecutorService implements ExecutorService {
 
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks,
                            long timeout, TimeUnit unit)
-        throws InterruptedException, ExecutionException, TimeoutException {
+            throws InterruptedException, ExecutionException, TimeoutException {
         return doInvokeAny(tasks, true, unit.toNanos(timeout));
     }
 
     /**
      * 执行多个线程
-     * @param tasks  线程任务
+     *
+     * @param tasks 线程任务
      * @param <T>   线程实体类
      * @return
      * @throws InterruptedException
      */
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks)
-        throws InterruptedException {
+            throws InterruptedException {
 
         //如果为null 抛异常
         if (tasks == null) throw new NullPointerException();
 
-        //声明与任务相同的list  保存标记
+        //声明与任务相同的list  结果集代理集合
         ArrayList<Future<T>> futures = new ArrayList<Future<T>>(tasks.size());
 
         //状态未完毕
@@ -215,9 +214,9 @@ public abstract class AbstractExecutorService implements ExecutorService {
         try {
             //遍历任务
             for (Callable<T> t : tasks) {
-                //创建 线程标记任务
+                //创建 线程结果集代理任务
                 RunnableFuture<T> f = newTaskFor(t);
-                //增加标记
+                //增加
                 futures.add(f);
                 //执行
                 execute(f);
@@ -233,7 +232,9 @@ public abstract class AbstractExecutorService implements ExecutorService {
                         //等待完成
                         f.get();
                     } catch (CancellationException ignore) {
+                        //取消异常不处理
                     } catch (ExecutionException ignore) {
+                        //执行异常不处理
                     }
                 }
             }
@@ -248,48 +249,80 @@ public abstract class AbstractExecutorService implements ExecutorService {
         }
     }
 
+    /**
+     * 执行多个线程
+     * @param tasks  线程任务
+     * @param timeout  执行时间
+     * @param unit     执行时间单位
+     * @param <T>      线程实体类
+     * @return
+     * @throws InterruptedException
+     */
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks,
                                          long timeout, TimeUnit unit)
-        throws InterruptedException {
-        if (tasks == null)
-            throw new NullPointerException();
+            throws InterruptedException {
+        //如果为null  跑异常
+        if (tasks == null) throw new NullPointerException();
+
+        //转换为纳秒
         long nanos = unit.toNanos(timeout);
+
+        //声明结果集代理集合
         ArrayList<Future<T>> futures = new ArrayList<Future<T>>(tasks.size());
+
+        //设置未完成状态标识
         boolean done = false;
         try {
+            //遍历线程对象 加入结果集代理集合中
             for (Callable<T> t : tasks)
                 futures.add(newTaskFor(t));
 
+            //当前纳秒时间+传入的纳秒时间
             final long deadline = System.nanoTime() + nanos;
+
+            //结果集代理总数
             final int size = futures.size();
 
             // Interleave time checks and calls to execute in case
             // executor doesn't have any/much parallelism.
+            //遍历 执行
             for (int i = 0; i < size; i++) {
-                execute((Runnable)futures.get(i));
+                execute((Runnable) futures.get(i));
+
+                //如果总时间减去当前纳秒 小于等于0 立即返回
+                //TODO 时间设置过短  可能造成线程未执行直接返回
+                //返回后取消所有线程任务
                 nanos = deadline - System.nanoTime();
                 if (nanos <= 0L)
                     return futures;
             }
 
+            //遍历结果集标记
             for (int i = 0; i < size; i++) {
                 Future<T> f = futures.get(i);
+                //如果未完成
                 if (!f.isDone()) {
+                    //无论执行到什么情况  纳秒小于0返回
                     if (nanos <= 0L)
                         return futures;
                     try {
+                        //结果集代理纳秒时间内等待完成
                         f.get(nanos, TimeUnit.NANOSECONDS);
                     } catch (CancellationException ignore) {
                     } catch (ExecutionException ignore) {
                     } catch (TimeoutException toe) {
                         return futures;
                     }
+                    //更新纳秒时间
                     nanos = deadline - System.nanoTime();
                 }
             }
+            //全部完成 设置完成状态
             done = true;
+            //正常返回执行结果集代理
             return futures;
         } finally {
+            //返回后  如果未完成  全部取消
             if (!done)
                 for (int i = 0, size = futures.size(); i < size; i++)
                     futures.get(i).cancel(true);
