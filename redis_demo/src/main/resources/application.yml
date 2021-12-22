@@ -1,0 +1,19 @@
+# 应用名称
+spring:
+  application:
+    name: redis_demo
+  redis:
+    database: 5
+    host: 127.0.0.1
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 50
+        max-wait: -1
+        min-idle: 0
+    pool:
+      retrynum: 5
+    port: 6379
+    timeout: 5000
+
+
