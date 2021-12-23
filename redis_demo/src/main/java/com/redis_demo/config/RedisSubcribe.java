@@ -1,6 +1,7 @@
 package com.redis_demo.config;
 
-import com.redis_demo.MyMessageListener;
+import com.redis_demo.CatMessageListener;
+import com.redis_demo.DogMessageListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,18 +21,22 @@ import javax.annotation.Resource;
 @Configuration
 public class RedisSubcribe {
     @Resource
-    private MyMessageListener redisSubscribeService;
+    private CatMessageListener catMessageListener;
 
-    @Bean
-    public MessageListenerAdapter messageListener() {
-        return new MessageListenerAdapter(redisSubscribeService, "onMessage");
-    }
+    @Resource
+    private DogMessageListener dogMessageListener;
 
     @Bean
     public RedisMessageListenerContainer redisContainer(RedisConnectionFactory factory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(factory);
-        container.addMessageListener(messageListener(), new PatternTopic("test"));
+
+        container.addMessageListener(new MessageListenerAdapter(catMessageListener, "onMessage"),
+                new PatternTopic("cat"));
+
+        container.addMessageListener(new MessageListenerAdapter(dogMessageListener, "onMessage"),
+                new PatternTopic("cat"));
+
         return container;
     }
 }

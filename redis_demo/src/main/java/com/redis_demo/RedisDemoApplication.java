@@ -1,5 +1,6 @@
 package com.redis_demo;
 
+import com.alibaba.fastjson.JSONObject;
 import com.redis_demo.config.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -24,14 +25,24 @@ public class RedisDemoApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         new Thread(()->{
-            while (true){
+            for (int i = 1; i <= 10; i++) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                redisService.convertAndSend("test", "你好");
-                log.info("发送了。。。。");
+                redisService.convertAndSend("cat", "布偶猫" + i);
+            }
+        }).start();
+
+        new Thread(()->{
+            for (int i = 1; i <= 10; i++) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                redisService.convertAndSend("dog", "哈士奇" + i);
             }
         }).start();
 

@@ -9,11 +9,11 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component
-public class MyMessageListener implements MessageListener {
+public class CatMessageListener implements MessageListener {
 
     @Override
     public void onMessage(Message message, byte[] bytes) {
-        log.info(new String(bytes, StandardCharsets.UTF_8));
-        log.info(message.toString());
+        log.info("CatMessageListener 消息内容:" + new String(message.getBody(), StandardCharsets.UTF_8));
+        log.info("CatMessageListener 通道:" + new String(message.getChannel(), StandardCharsets.UTF_8));
     }
 }
