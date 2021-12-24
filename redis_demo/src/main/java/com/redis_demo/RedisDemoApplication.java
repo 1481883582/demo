@@ -25,6 +25,19 @@ public class RedisDemoApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         new Thread(()->{
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            long increment = redisService.increment("123", 60L);
+                log.info(increment + "");
+
+                redisService.set("111", 111, 60L);
+                redisService.set("222", 222);
+        }}).start();
+        new Thread(()->{
             for (int i = 1; i <= 10; i++) {
                 try {
                     Thread.sleep(1000);

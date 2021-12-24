@@ -153,4 +153,19 @@ public interface RedisService {
      * @return
      */
     void removeKeyPattern(final String pattern);
+
+    /**
+     * 自增
+     * @param key  key
+     * @return
+     */
+    long increment(String key);
+
+    /**
+     * 自增加超时
+     * @param key
+     * @param expireTime
+     * @return
+     */
+    long increment(String key, Long expireTime);
 }

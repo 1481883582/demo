@@ -294,4 +294,29 @@ public class RedisServiceImpl implements RedisService {
         Set<String> keys = redisTemplate.keys(pattern);
         redisTemplate.delete(keys);
     }
+
+    /**
+     * 自增
+     * @param key  key
+     * @return
+     */
+    @Override
+    public long increment(String key) {
+        return redisTemplate.opsForValue().increment(key);
+    }
+
+    /**
+     * 自增加超时
+     * @param key
+     * @param expireTime
+     * @return
+     */
+    @Override
+    public long increment(String key, Long expireTime) {
+        Long increment = redisTemplate.opsForValue().increment(key);
+        redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+        return increment;
+    }
+
+
 }
