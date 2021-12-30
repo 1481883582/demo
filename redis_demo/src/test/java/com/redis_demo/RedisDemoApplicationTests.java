@@ -1,5 +1,6 @@
 package com.redis_demo;
 
+import com.redis_demo.bean.Student;
 import com.redis_demo.config.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -72,7 +73,8 @@ class RedisDemoApplicationTests {
         }
         for (; ; ) {
             long l = System.currentTimeMillis();
-            redisService.hmSet("1", l, l, 60L);
+            Student student = Student.builder().age((int) l).name("张三").build();
+            redisService.hmSet("1", l, student, 60L);
             log.info(redisService.hmGet("1", l).toString());
         }
     }
