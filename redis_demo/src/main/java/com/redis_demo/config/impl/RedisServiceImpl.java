@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
-public class RedisServiceImpl implements RedisService {
+public class RedisServiceImpl<T> implements RedisService {
     @Resource
     private RedisTemplate redisTemplate;
 
@@ -206,6 +206,12 @@ public class RedisServiceImpl implements RedisService {
      */
     @Override
     public List getList(String k) {
+        BoundListOperations boundListOperations = redisTemplate.boundListOps(k);
+        return boundListOperations.range(0, boundListOperations.size());
+    }
+
+    @Override
+    public List<T> getTList(String k) {
         BoundListOperations boundListOperations = redisTemplate.boundListOps(k);
         return boundListOperations.range(0, boundListOperations.size());
     }

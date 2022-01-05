@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -77,6 +78,19 @@ class RedisDemoApplicationTests {
             redisService.hmSet("1", l, student, 60L);
             log.info(redisService.hmGet("1", l).toString());
         }
+    }
+
+    /**
+     * 测试List泛型
+     */
+    @Test
+    void list(){
+        for (int i = 0; i < 10; i++) {
+            Student build = Student.builder().age(i).name(i+"").build();
+            redisService.lPush("1", build);
+        }
+        List<Student> studentList = redisService.getTList("1");
+        log.info(studentList.toString());
     }
 
 }

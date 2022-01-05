@@ -3,7 +3,7 @@ package com.redis_demo.config;
 import java.util.List;
 import java.util.Set;
 
-public interface RedisService {
+public interface RedisService<T> {
 
     /**
      * 写入缓存设置时效时间
@@ -101,6 +101,14 @@ public interface RedisService {
      * @return
      */
      List<Object> getList(String k);
+
+    /**
+     * 全量获取列表
+     *
+     * @param k
+     * @return
+     */
+    List<T> getTList(String k);
 
     /**
      * 集合添加
