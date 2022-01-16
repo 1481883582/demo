@@ -1,11 +1,16 @@
 package com.base.utils;
 
+
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -17,6 +22,10 @@ import java.util.UUID;
  */
 @Slf4j
 public class FileUtils {
+    /**
+     * 换行
+     */
+    public static final String LINE = "\n";
 
     public static final String appPath = FileUtils.getAppPath();
 
@@ -35,7 +44,7 @@ public class FileUtils {
      */
     public static String copyConfig(String copyPath, String configDir, String configFile) throws IOException {
 
-        String configPath = FileUtils.getAppUpPath(configDir, configFile);
+        String configPath = getAppUpPath(configDir, configFile);
         log.info(copyPath + "  预计复制到  " + configPath);
         copyConfig(copyPath, configPath);
         return configPath;
@@ -44,10 +53,10 @@ public class FileUtils {
     public static String copyConfig(String copyPath, String configPath) throws IOException {
 
         //如果文件不存在
-        if (FileUtils.isNotFileExist(configPath)) {
+        if (isNotFileExist(configPath)) {
             log.info(configPath + "不存在！开始复制从" + copyPath + "文件到  " + configPath);
 
-            FileUtils.copyFile(FileUtils.class.getResourceAsStream(copyPath), configPath);
+            copyFile(FileUtils.class.getResourceAsStream(copyPath), configPath);
         }
         return configPath;
     }
@@ -74,8 +83,14 @@ public class FileUtils {
     }
 
     public static void copyFile(InputStream intStream, File destPath) throws IOException {
+
         //如果不存在 创建
-        if (!destPath.exists()) destPath.createNewFile();
+        if (!destPath.exists()) {
+            //创建父目录
+            makeParentDirectory(destPath);
+            //创建文件
+            destPath.createNewFile();
+        }
 
         //选择流
         InputStream is = intStream;
@@ -684,4 +699,215 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 获取文件编码
+     *
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
+    public static String codeString(String fileName) throws Exception {
+        BufferedInputStream bin = new BufferedInputStream(new FileInputStream(fileName));
+        int p = (bin.read() << 8) + bin.read();
+        bin.close();
+        String code = null;
+        System.out.println(p);
+        switch (p) {
+            case 0xefbb:
+                code = "UTF-8";
+                break;
+            case 0xfffe:
+                code = "Unicode";
+                break;
+            case 0xfeff:
+                code = "UTF-16BE";
+                break;
+            default:
+                code = "GBK";
+        }
+        System.out.println(code);
+        return code;
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param file
+     * @param filePath
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
+    public static String uploadFile(byte[] file, String filePath, String fileName) throws Exception {
+        File targetFile = new File(filePath);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        FileOutputStream out = new FileOutputStream(filePath + System.getProperty("file.separator") + fileName);
+        out.write(file);
+        out.flush();
+        out.close();
+        return filePath + System.getProperty("file.separator") + fileName;
+    }
+
+
+    public static Charset detectCodepage(InputStream in, int length) throws IOException {
+        byte[] bom = new byte[4];
+        in.read(bom, 0, 4);
+
+        byte b = -17;
+        if ((bom[0] == 0) && (bom[1] == 0) && (bom[2] == -2) && (bom[2] == -1)) {
+            return Charset.forName("UTF-32BE");
+        }
+        if ((bom[0] == -1) && (bom[1] == -2) && (bom[2] == 0) && (bom[2] == 0)) {
+            return Charset.forName("UTF-32LE");
+        }
+        if ((bom[0] == -17) && (bom[1] == -69) && (bom[2] == -65)) {
+            return Charset.forName("UTF-8");
+        }
+        if ((bom[0] == -1) && (bom[1] == -2)) {
+            return Charset.forName("UTF-16LE");
+        }
+        if ((bom[0] == -2) && (bom[1] == -1)) {
+            return Charset.forName("UTF-16BE");
+        }
+        return Charset.forName("GBK");
+    }
+
+    public static Charset detectCodepage(InputStream inputStream) throws IOException {
+        BufferedInputStream in = new BufferedInputStream(inputStream);
+        Charset result = detectCodepage(in, Integer.MAX_VALUE);
+        in.close();
+        return result;
+    }
+
+    public static String getEncoding3(String path) {
+        File file = new File(path);
+        InputStream in = null;
+        try {
+            in = new FileInputStream(file);
+            byte[] b = new byte[3];
+            in.read(b);
+            in.close();
+            if (b[0] == -17 && b[1] == -69 && b[2] == -65) {
+                System.out.println(file.getName() + "：编码为UTF-8");
+            } else {
+                System.out.println(file.getName() + "：可能是GBK，也可能是其他编码");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String checkEncoding(String str) {
+        String encode = "UTF-16";
+        try {
+            if (str.equals(new String(str.getBytes(), encode))) {
+                return encode;
+            }
+        } catch (Exception ex) {
+        }
+
+        encode = "ASCII";
+        try {
+            if (str.equals(new String(str.getBytes(), encode))) {
+                return "none";
+            }
+        } catch (Exception ex) {
+        }
+
+        encode = "ISO-8859-1";
+        try {
+            if (str.equals(new String(str.getBytes(), encode))) {
+                return encode;
+            }
+        } catch (Exception ex) {
+        }
+
+        encode = "GB2312";
+        try {
+            if (str.equals(new String(str.getBytes(), encode))) {
+                return encode;
+            }
+        } catch (Exception ex) {
+        }
+
+        encode = "UTF-8";
+        try {
+            System.out.println("----<" + new String(str.getBytes(), encode));
+            if (str.equals(new String(str.getBytes(), encode))) {
+                return encode;
+            }
+        } catch (Exception ex) {
+        }
+
+        return "未识别编码格式";
+    }
+
+    /**
+     * 返回文件内容
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
+    public static String get(InputStream inputStream) throws IOException {
+        byte[] buffer = new byte[inputStream.available()];
+        inputStream.read(buffer);
+        inputStream.close();
+        return new String(buffer);
+    }
+
+    /**
+     * 给文件增加内容
+     * @param fileName  文件名
+     * @param append  是否追加
+     * @param bytes   byte数组
+     * @throws Exception
+     */
+    public static void addWrite(String fileName, boolean append, byte[] bytes) throws Exception {
+        FileOutputStream os = new FileOutputStream(fileName, true);
+        os.write(bytes, 0, bytes.length);
+        os.close();
+    }
+
+    /**
+     *
+     * @param path  目录 D:/abc
+     * @param fileName   文件名  aa.txt
+     * @param context  数据存入内容
+     * @param isLine  追加是否换行
+     */
+    @SneakyThrows
+    public static void save(String path, String fileName, String context, Boolean isLine){
+        // 判断文件夹是否存在
+        File dirFile = new File(path);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
+
+        //绝对文件路径
+        String absolutePath = new StringBuffer(path).append("/").append(fileName).toString();
+
+        //判断文件是否存在
+        if (FileUtils.isNotFileExist(absolutePath)){
+            FileUtils.touch(absolutePath);
+        }
+
+        //追加数据
+        FileUtils.addWrite(absolutePath, true, context.getBytes(StandardCharsets.UTF_8));
+
+        if (isLine) FileUtils.addWrite(absolutePath.toString(), true, FileUtils.LINE.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static void main(String[] args) {
+        while (true){
+            int i = new Random().nextInt(10) + 1;
+            FileUtils.save("D:/abc", i + "aa.txt", "你好", true);
+            Thread.yield();
+        }
+    }
 }
