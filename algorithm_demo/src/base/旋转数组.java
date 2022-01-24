@@ -52,30 +52,19 @@ public class 旋转数组 {
         System.out.println(Arrays.toString(nums));
     }
 
-    private static Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-
     public static void rotate(int[] nums, int k) {
-        //无数据直接返回
         if(nums == null || k == 0 || nums.length <= 1){
             return ;
         }
 
+        //临时数据
+        int[] newInt = new int[nums.length];
+        for(int i = 0; i < newInt.length; i++){
+            newInt[i] = nums[i];
+        }
+
         for(int i = 0; i < nums.length; i++){
-            //余数 获取要放入的下标
-            int a = (k + i)% nums.length;
-
-            //要放入的数据
-            int b = 0;
-            if(map.containsKey(i)){
-                b = map.get(i);
-            }else{
-                b = nums[i];
-            }
-
-            //把被占用的位置数据放入map
-            map.put(a, nums[a]);
-            //把数据放入需要移入的位置
-            nums[a] = b;
+            nums[(k + i) % nums.length] = newInt[i];
         }
     }
 }
