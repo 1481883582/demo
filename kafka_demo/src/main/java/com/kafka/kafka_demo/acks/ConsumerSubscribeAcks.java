@@ -27,13 +27,13 @@ public class ConsumerSubscribeAcks {
         //value传递反序列化规则
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         //指定消费者分组id
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "c3");
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "v3");
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
 
         //订阅相关得Topics
         //一个topic多个分区时 一个消费组多个消费者时  subscribe订阅自动负载均衡
-        consumer.subscribe(Pattern.compile("^ac.*"));
+        consumer.subscribe(Pattern.compile("^parsing_data_topic.*"));
 
         //遍历消息队列
         while (true){
