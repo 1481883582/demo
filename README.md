@@ -8,4 +8,4 @@
 ## [netty_demo](https://github.com/1481883582/demo/tree/master/netty_demo)
 ## [openfeign_demo](https://github.com/1481883582/demo/tree/master/openfeign_demo)
 ## [swagger_demo](https://github.com/1481883582/demo/tree/master/swagger_demo)
-## [知识点](https://github.com/1481883582/demo/resources/知识点.md)
+## [知识点](https://github.com/1481883582/demo/blob/master/resources/info.md)
