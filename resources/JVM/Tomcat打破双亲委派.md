@@ -166,3 +166,23 @@ public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundExce
 5.如果本地目录下没有这个类，说明不是 Web 应用自己定义的类，那么由系统类加载器去加载。这里请你注意，Web 应用是通过Class.forName调用交给系统类加载器的，因为Class.forName的默认加载器就是系统类加载器。
 6.如果上述加载过程全部失败，抛出 ClassNotFound 异常。
 ```
+
+# 总结
+```text
+打破原因：主要原因是tomcat的web目录下可能会有多个目录包，如果直接加载AppClassLoader会导致多个项目中相同名称不同实现类覆盖
+所以加载顺序：本地目录缓存->ExtClassLoader->BootstrapClassLoader->本项目录查找加载->AppClassLoader
+```
+## Tomcat是如何打破双亲委派机制的呢？
+
+Tomcat是先去本地目录加载，为了避免本地目录覆盖掉JRE的核心类，如java.lang包等，先尝试用ExtClassLoader加载，这样即能打破双亲委派机制，有避免了覆盖掉核心类。
+
+## 为什么不是尝试用AppClassLoader加载呢？
+
+如果是尝试用AppClassLoader，这样不又变会双亲委派机制了嘛。
+
+## 类加载结构图
+![img.png](img.png)
+
+## 参考链接
+[https://blog.csdn.net/Miiiiiiiiiii/article/details/119324305](https://blog.csdn.net/Miiiiiiiiiii/article/details/119324305)
+[https://www.zhihu.com/question/466696410](https://www.zhihu.com/question/466696410)
