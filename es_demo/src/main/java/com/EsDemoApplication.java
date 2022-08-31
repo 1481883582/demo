@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @SpringBootApplication
 @MapperScan(basePackages = {"com.mapper"})
-@EnableElasticsearchRepositories(basePackages = "com.repository")
+@EnableElasticsearchRepositories(basePackages = "com")
 public class EsDemoApplication {
 
     public static void main(String[] args) {
