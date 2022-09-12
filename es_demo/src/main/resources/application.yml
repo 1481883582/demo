@@ -38,3 +38,5 @@ mybatis-plus:
     map-underscore-to-camel-case: false
     cache-enabled: false
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+elasticsearch:
+  hosts: cc
