@@ -1,7 +1,5 @@
 package com.redis_demo;
 
-import com.alibaba.fastjson.JSONObject;
-import com.redis_demo.bean.Student;
 import com.redis_demo.config.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -10,8 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.Resource;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @Slf4j
 @SpringBootApplication
