@@ -1,20 +1,26 @@
-package com.redis_demo.redisson;
+package com.redis_demo.controller;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public class deduc {
+import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
-    @Autowired
+@RestController
+public class RedissonController {
+    @Resource
     private RedissonClient redissonClient;
 
-    public String deduc2() {
+    @GetMapping("/lock")
+    public String test(){
         String lockKey = "lock:pro-100";
         RLock lock = redissonClient.getLock(lockKey);
         lock.lock();
         // 锁续命
         try {
+            Thread.sleep(100000L);
 //            String productKey = "pro-100";
 //            Integer count = (Integer) redisTemplate.opsForValue().get(productKey);
 //            count--;
@@ -25,6 +31,6 @@ public class deduc {
         } finally {
             lock.unlock();
         }
-        return "ok";
+        return "OK";
     }
 }

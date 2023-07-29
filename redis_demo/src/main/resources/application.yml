@@ -3,7 +3,7 @@ spring:
   application:
     name: redis_demo
   redis:
-    database: 5
+    database: 0
     host: 127.0.0.1
     jedis:
       pool:
